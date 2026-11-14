@@ -1213,7 +1213,7 @@
       }
 
       .menu-toggle:hover,
-      .menu-toggle[aria-expanded="true"] {
+      .menu-toggle[aria-expanded="false"] {
         background: #164a37bb;
       }
 
@@ -1225,15 +1225,15 @@
         transition: transform .2s, opacity .2s;
       }
 
-      .menu-toggle[aria-expanded="true"] span:first-child {
+      .menu-toggle[aria-expanded="false"] span:first-child {
         transform: translateY(8px) rotate(45deg);
       }
 
-      .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+      .menu-toggle[aria-expanded="false"] span:nth-child(2) {
         opacity: 0;
       }
 
-      .menu-toggle[aria-expanded="true"] span:last-child {
+      .menu-toggle[aria-expanded="false"] span:last-child {
         transform: translateY(-8px) rotate(-45deg);
       }
 
@@ -1329,11 +1329,11 @@
           width: 20px;
         }
 
-        .menu-toggle[aria-expanded="true"] span:first-child {
+        .menu-toggle[aria-expanded="false"] span:first-child {
           transform: translateY(7px) rotate(45deg);
         }
 
-        .menu-toggle[aria-expanded="true"] span:last-child {
+        .menu-toggle[aria-expanded="false"] span:last-child {
           transform: translateY(-7px) rotate(-45deg);
         }
       }
@@ -1375,17 +1375,14 @@
       }
     </style>
   </head>
-  <body class="">
+  <body>
     <!-- 顶部校徽与功能菜单 -->
-  <header class="cover-nav scrolled" aria-label="影集导航">
+  <header class="cover-nav" aria-label="影集导航">
       <a class="brand" href="#top" aria-label="返回首页"><img class="official-logo" src="%E5%AE%98%E7%BD%91/d-logo1.png" alt="南京师范大学 Nanjing Normal University"></a>
       <div class="cover-actions">
-        <button class="menu-toggle" id="menuToggle" type="button" aria-label="关闭影集菜单" aria-expanded="true" aria-controls="albumMenu"><span></span><span></span><span></span></button>
-        <div class="tools" id="albumMenu">
-          <button id="editToggle" class="plain" aria-pressed="false">整理照片</button>
-          <button id="export" class="outline">导出影集 ↗</button>
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="打开影集菜单" aria-expanded="false" aria-controls="albumMenu"><span></span><span></span><span></span></button>
+        <div class="tools" id="albumMenu" hidden>
           <button class="outline" id="slideshow">▷ 放映影集</button>
-          <button class="outline" id="albumSettings" hidden="">影集设置</button>
         </div>
       </div>
     </header>
@@ -1406,23 +1403,14 @@
           <div class="filterline">
             <div class="category-controls">
               <div class="filters" id="filters" aria-label="按标签筛选"></div>
-              <button class="chip add-category" id="addCategory" type="button" hidden="">＋ 添加分类</button>
-              <button class="chip add-category delete-category" id="deleteCategory" type="button" hidden="">－ 删除分类</button>
             </div>
             <input class="search" id="search" type="search" placeholder="搜索标题、标签、文件名" aria-label="搜索照片" value="">
           </div>
-          <p class="status" id="status" aria-live="polite">未分类 / 19 张</p>
-          <div class="batchbar" id="batchbar" hidden="">
-            <span id="selectedCount">已选 0 张</span>
-            <button class="plain" id="selectPage">全选本页</button>
-            <button class="plain" id="clearSelection">清空选择</button>
-            <button class="outline" id="batchTags" disabled="">批量设置标签</button>
-            <span class="hint">修改保存在此浏览器；完成后请导出。</span>
-          </div>
+          <p class="status" id="status" aria-live="polite"></p>
           <div class="gallery" id="gallery"></div>
           <div class="pagination">
             <button id="prevPage" disabled="">← 上一页</button>
-            <span id="pageInfo">1 / 2</span>
+            <span id="pageInfo"></span>
             <button id="nextPage">下一页 →</button>
           </div>
         </section>
@@ -1437,7 +1425,6 @@
     <dialog class="lightbox" id="viewer" aria-label="照片放大浏览">
       <div class="lightbox-inner">
         <div class="light-head">
-          <span id="viewerPosition" hidden="">103 / 141</span>
           <span>← → 切换 · 空格播放 / 暂停 · Esc 关闭</span>
           <button id="closeViewer" aria-label="关闭大图">关闭 ×</button>
         </div>
@@ -1455,82 +1442,6 @@
         </div>
       </div>
     </dialog>
-    <dialog class="modal" id="editor" aria-labelledby="editorTitle">
-      <form id="photoForm">
-        <h2 id="editorTitle">整理这一帧</h2>
-        <p id="editorFilename">微信图片_20261114143032_800_30.jpg</p>
-        <img class="editor-image" id="editorImage" alt="当前编辑照片" src="079-thumb.jpg">
-        <label class="formrow">照片标题<input id="photoTitle" maxlength="60" placeholder="为这一帧取个名字（可留空）"></label>
-        <label class="formrow">照片寄语<textarea id="photoCaption" maxlength="600" placeholder="地点、拍摄故事，或想留住的心情……"></textarea></label>
-        <div>
-          分类标签
-          <span class="hint">可多选，地点由你们确定</span>
-        </div>
-        <div id="photoTags" class="tagpicker"><label><input type="checkbox" value="德风园">德风园</label><label><input type="checkbox" value="随园的毛孩子们">随园的毛孩子们</label><label><input type="checkbox" value="南大楼">南大楼</label><label><input type="checkbox" value="100号楼">100号楼</label><label><input type="checkbox" value="大草坪">大草坪</label><label><input type="checkbox" value="中大楼">中大楼</label></div>
-        <div class="newtag">
-          <input id="newTag" maxlength="30" placeholder="添加自定义标签" aria-label="新标签名称">
-          <button type="button" class="outline" id="addTag">添加</button>
-        </div>
-        <label class="formrow"><input type="checkbox" id="setCover" style="display:inline;width:auto;margin:0 8px 0 0">设为影集封面</label>
-        <div class="modal-actions">
-          <button class="outline" type="button" id="cancelEditor">取消</button>
-          <button class="primary" type="submit">保存修改</button>
-        </div>
-      </form>
-    </dialog>
-    <dialog class="modal" id="batchEditor" aria-labelledby="batchTitle">
-      <form id="batchForm">
-        <h2 id="batchTitle">为 3 张照片设置标签</h2>
-        <p>将勾选的标签添加到所选照片，保留它们已有的标签。</p>
-        <div id="batchPicker" class="tagpicker"><label><input type="checkbox" value="德风园">德风园</label><label><input type="checkbox" value="随园的毛孩子们">随园的毛孩子们</label><label><input type="checkbox" value="南大楼">南大楼</label><label><input type="checkbox" value="100号楼">100号楼</label><label><input type="checkbox" value="大草坪">大草坪</label><label><input type="checkbox" value="中大楼">中大楼</label><label><input type="checkbox" value="图书馆">图书馆</label><label><input type="checkbox" value="600号楼">600号楼</label><label><input type="checkbox" value="一号门">一号门</label><label><input type="checkbox" value="连廊">连廊</label><label><input type="checkbox" value="檐角">檐角</label><label><input type="checkbox" value="700号楼">700号楼</label></div>
-        <label class="formrow"><input type="checkbox" id="replaceTags" style="display:inline;width:auto;margin:0 8px 0 0">改为替换原有标签（不勾选则追加）</label>
-        <div class="modal-actions">
-          <button class="outline" type="button" id="cancelBatch">取消</button>
-          <button class="primary" type="submit">应用到所选照片</button>
-        </div>
-      </form>
-    </dialog>
-    <!-- 编辑模式：新增照片分类 -->
-    <dialog class="modal" id="categoryEditor" aria-labelledby="categoryEditorTitle">
-      <form id="categoryForm">
-        <h2 id="categoryEditorTitle">添加分类</h2>
-        <label class="formrow" for="categoryName">分类名称
-          <input id="categoryName" maxlength="30" required="" autofocus="" placeholder="例如：德风园、100号楼" aria-describedby="categoryError">
-        </label>
-        <p id="categoryError" class="category-error" role="alert"></p>
-        <div class="modal-actions">
-          <button class="outline" type="button" id="cancelCategory">取消</button>
-          <button class="primary" type="submit">添加分类</button>
-        </div>
-      </form>
-    </dialog>
-    <!-- 删除分类只移除标签，不删除照片 -->
-    <dialog class="modal" id="categoryDeleteEditor" aria-labelledby="categoryDeleteTitle">
-      <form id="categoryDeleteForm">
-        <h2 id="categoryDeleteTitle">删除分类</h2>
-        <p>勾选要删除的分类。照片会保留，没有其他分类的照片归入「未分类」。</p>
-        <div id="categoryDeletePicker" class="tagpicker"></div>
-        <p id="categoryDeleteImpact" aria-live="polite">请选择要删除的分类。</p>
-        <div class="modal-actions">
-          <button class="outline" type="button" id="cancelCategoryDelete">取消</button>
-          <button class="primary" type="submit" id="confirmCategoryDelete" disabled="">删除所选分类</button>
-        </div>
-      </form>
-    </dialog>
-    <dialog class="modal" id="settings" aria-labelledby="settingsTitle">
-      <form id="settingsForm">
-        <h2 id="settingsTitle">影集设置</h2>
-        <label class="formrow">影集名称<input id="albumTitle" required="" maxlength="12"></label>
-        <label class="formrow">作者 / 团队署名<input id="albumAuthor" maxlength="80" placeholder="填写你们的署名"></label>
-        <label class="formrow">分类标签（一行一个）<textarea id="albumTags" rows="7"></textarea></label>
-        <p>标签名称请勿含英文逗号。删除标签时，会同步移除照片上的该标签；照片本身保留。未标注的照片显示为「未分类」。</p>
-        <div class="modal-actions">
-          <button class="outline" type="button" id="cancelSettings">取消</button>
-          <button class="primary" type="submit">保存设置</button>
-        </div>
-      </form>
-    </dialog>
-    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <noscript><p class="error">请启用浏览器 JavaScript 以显示照片及使用分类功能。</p></noscript>
     <script id="album-data" type="application/json">{
   "version": 1,
@@ -3517,190 +3428,96 @@
     <script>
       (() => {
         'use strict';
-        const $ = id => document.getElementById(id),
-          initial = JSON.parse($('album-data').textContent);
-        // 修改照片清单时，保持 id 唯一；src / thumb 为相对本 HTML 的图片路径。
 
-        // 状态与本地保存
-        const storageKey = 'suiyuan-album-v1:' + location.pathname;
-        let state = initial,
-          filter = '全部',
-          query = '',
-          page = 1,
-          editing = false,
-          selected = new Set(),
-          editingId = null,
-          viewerList = [],
-          viewerIndex = 0,
-          timer = null,
-          toastTimer;
-        let draftTags = [];
-        try {
-          const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
-          if (saved && saved.version === 1 && Array.isArray(saved.photos) && saved.photos.length &&
-            Array.isArray(saved.tags)) {
-            state = {
-              ...initial,
-              ...saved,
-              photos: [
-                ...saved.photos,
-                ...initial.photos.filter(photo =>
-                  !saved.photos.some(savedPhoto => savedPhoto.id === photo.id))
-              ],
-              coverImage: saved.coverImage || initial.coverImage
-            };
+        // 分类与照片均来自 HTML 内的固定数据，不读取浏览器中的旧编辑记录。
+        const $ = id => document.getElementById(id);
+        const album = JSON.parse($('album-data').textContent);
+        const PAGE_SIZE = 18;
+        let filter = '全部';
+        let query = '';
+        let page = 1;
+        let viewerList = [];
+        let viewerIndex = 0;
+        let timer = null;
 
-            // 只清理旧版预设分类一次，保留用户自建分类、标题与照片。
-            if ((saved.presetCategoryReset || 0) < (initial.presetCategoryReset || 0)) {
-              const presets = new Set(['德风园', '100号楼', '大草坪', '长廊', '花木绿植', '校园生活']);
-              state.tags = state.tags.filter(tag => !presets.has(tag));
-              state.photos.forEach(photo => {
-                photo.tags = photo.tags.filter(tag => !presets.has(tag));
-              });
-              state.presetCategoryReset = initial.presetCategoryReset;
-              save();
-            }
-          }
-        } catch (e) {}
-        const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+        const escape = value => String(value ?? '').replace(/[&<>"']/g, character => ({
           '&': '&amp;',
           '<': '&lt;',
           '>': '&gt;',
           '"': '&quot;',
           "'": '&#39;'
-        } [c]));
-        const title = (p) => p.title || '';
+        } [character]));
 
-        // 提示与基础显示
-        function toast(s) {
-          $('toast').textContent = s;
-          clearTimeout(toastTimer);
-          toastTimer = setTimeout(() => $('toast').textContent = '', 4500);
-        }
-
-        function save() {
-          try {
-            localStorage.setItem(storageKey, JSON.stringify(state));
-          } catch (e) {
-            toast('浏览器未能保存，请点击「导出影集」保留修改。');
-          }
-        }
-
-        function cover() {
-          const p = state.photos.find(p => p.id === state.cover) || state.photos[0];
-          $('cover').src = state.coverImage || (p && p.src) || '';
-          document.querySelectorAll('[data-album-title]').forEach(el => el.textContent = state.title);
-          $('credit').textContent = state.author || '';
-          document.title = state.title + ' · 校园微影集';
-        }
-
-        // 照片筛选与列表渲染
-        function matches() {
-          return state.photos.filter(p => (filter === '全部' || (filter === '未分类' ? p.tags.length === 0 :
-            p.tags.includes(filter))) && (!query || [p.title, p.caption, p.filename, ...p.tags]
-            .join(' ').toLowerCase().includes(query)));
-        }
-
-        function filterButtons() {
-          const names = ['全部', ...state.tags, '未分类'];
-          $('filters').innerHTML = names.map(t => {
-            const count = t === '全部' ? state.photos.length : t === '未分类' ? state.photos.filter(p =>
-              !p.tags.length).length : state.photos.filter(p => p.tags.includes(t)).length;
-            return '<button class="chip ' + (filter === t ? 'active' : '') + '" data-filter="' +
-              esc(t) + '" aria-pressed="' + (filter === t) + '">' + esc(t) + '<span>' + count +
-              '</span></button>';
-          }).join('');
-        }
-        const PAGE_SIZE = 18;
-
-        function render() {
-          $('addCategory').hidden = !editing;
-          $('deleteCategory').hidden = !editing;
-          $('deleteCategory').disabled = !state.tags.length;
-          if (!['全部', '未分类', ...state.tags].includes(filter)) filter = '全部';
-          filterButtons();
-          const photos = matches(),
-            pages = Math.max(1, Math.ceil(photos.length / PAGE_SIZE));
-          page = Math.min(page, pages);
-          const visible = photos.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-          $('status').textContent = (filter === '全部' ? '全部影像' : filter) + ' / ' + photos.length + ' 张';
-          $('gallery').classList.toggle('editing', editing);
-          $('gallery').innerHTML = visible.length ? visible.map(p => '<figure data-id="' + p.id +
-              '"><label class="select-photo"><input type="checkbox" data-select="' + p.id + '" ' + (
-                selected.has(p.id) ? 'checked' : '') +
-              '>选择</label><button class="photo-btn" data-view="' + p.id + '" aria-label="查看 ' + esc(
-                title(p) || '校园照片') + '"><img src="' + esc(p.thumb) +
-              '" loading="lazy" decoding="async" alt="' + esc(title(p) || '校园照片') +
-              '"></button><figcaption>' + (p.tags.length || editing ?
-                '<div class="photo-kicker"><span class="tagtext">' + esc(p.tags.length ? p.tags.join(
-                  ' · ') : '未分类') + '</span></div>' : '') + (p.title ? '<h3 class="photo-title">' + esc(
-                title(p)) + '</h3>' : '') + (p.caption ? '<p class="photo-caption">' + esc(p.caption) +
-                '</p>' : '') + (editing ? '<div class="filename" title="' + esc(p.filename) + '">' +
-                esc(p.filename) + '</div><button class="edit-photo" data-edit="' + p.id +
-                '">编辑标题与标签 ↗</button>' : '') + '</figcaption></figure>').join('') :
-            '<div class="empty"><strong>这一页，留给下一段记忆。</strong>' + (query ? '没有找到相关照片，请试试其他关键词。' :
-              '这个标签下还没有照片。点击「整理照片」，为照片添加此标签。') + '</div>';
-          $('pageInfo').textContent = page + ' / ' + pages;
-          $('prevPage').disabled = page === 1;
-          $('nextPage').disabled = page === pages;
-          $('slideshow').disabled = !photos.length;
-          updateSelection();
-        }
-
-        function updateSelection() {
-          $('selectedCount').textContent = '已选 ' + selected.size + ' 张';
-          $('batchTags').disabled = !selected.size;
-        }
-
-        // 列表交互与整理模式
-        function toggleEdit() {
-          editing = !editing;
-          $('editToggle').textContent = editing ? '完成整理' : '整理照片';
-          $('editToggle').setAttribute('aria-pressed', String(editing));
-          $('albumSettings').hidden = !editing;
-          $('batchbar').hidden = !editing;
-          if (!editing) selected.clear();
-          render();
-          if (editing) $('album').scrollIntoView({
-            behavior: 'smooth'
+        function matchingPhotos() {
+          return album.photos.filter(photo => {
+            const inCategory = filter === '全部' || (filter === '未分类' ?
+              photo.tags.length === 0 :
+              photo.tags.includes(filter));
+            const text = [photo.title, photo.caption, photo.filename, ...photo.tags]
+              .join(' ').toLowerCase();
+            return inCategory && (!query || text.includes(query));
           });
         }
-        $('editToggle').onclick = toggleEdit;
-        $('filters').onclick = e => {
-          const b = e.target.closest('[data-filter]');
-          if (!b) return;
-          filter = b.dataset.filter;
+
+        // 标签筛选与分页只改变显示结果，不修改照片分类。
+        function renderFilters() {
+          $('filters').innerHTML = ['全部', ...album.tags, '未分类'].map(name => {
+            const count = name === '全部' ? album.photos.length : album.photos.filter(photo =>
+              name === '未分类' ? photo.tags.length === 0 : photo.tags.includes(name)).length;
+            return `<button class="chip ${filter === name ? 'active' : ''}" ` +
+              `data-filter="${escape(name)}" aria-pressed="${filter === name}">` +
+              `${escape(name)}<span>${count}</span></button>`;
+          }).join('');
+        }
+
+        function photoCard(photo) {
+          const title = photo.title || '校园照片';
+          const details = [
+            photo.tags.length ? '<div class="photo-kicker"><span class="tagtext">' +
+            escape(photo.tags.join(' · ')) + '</span></div>' : '',
+            photo.title ? `<h3 class="photo-title">${escape(photo.title)}</h3>` : '',
+            photo.caption ? `<p class="photo-caption">${escape(photo.caption)}</p>` : ''
+          ].join('');
+          return `<figure data-id="${escape(photo.id)}">` +
+            `<button class="photo-btn" data-view="${escape(photo.id)}" aria-label="查看 ${escape(title)}">` +
+            `<img src="${escape(photo.thumb)}" loading="lazy" decoding="async" alt="${escape(title)}">` +
+            '</button>' + (details ? `<figcaption>${details}</figcaption>` : '') + '</figure>';
+        }
+
+        function render() {
+          renderFilters();
+          const photos = matchingPhotos();
+          const pages = Math.max(1, Math.ceil(photos.length / PAGE_SIZE));
+          page = Math.min(page, pages);
+          const visible = photos.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+          $('status').textContent = `${filter === '全部' ? '全部影像' : filter} / ${photos.length} 张`;
+          $('gallery').innerHTML = visible.length ? visible.map(photoCard).join('') :
+            '<div class="empty">' + (query ? '没有找到相关照片。' : '此分类暂无照片。') + '</div>';
+          $('pageInfo').textContent = `${page} / ${pages}`;
+          $('prevPage').disabled = page === 1;
+          $('nextPage').disabled = page === pages;
+          $('slideshow').disabled = photos.length === 0;
+        }
+
+        $('filters').onclick = event => {
+          const button = event.target.closest('[data-filter]');
+          if (!button) return;
+          filter = button.dataset.filter;
           page = 1;
           render();
         };
-        $('search').oninput = e => {
-          query = e.target.value.trim().toLowerCase();
+        $('search').oninput = event => {
+          query = event.target.value.trim().toLowerCase();
           page = 1;
           render();
         };
-        $('gallery').onclick = e => {
-          const v = e.target.closest('[data-view]'),
-            ed = e.target.closest('[data-edit]');
-          if (v) openViewer(v.dataset.view);
-          if (ed) openEditor(ed.dataset.edit);
-        };
-        $('gallery').onchange = e => {
-          if (!e.target.dataset.select) return;
-          const id = e.target.dataset.select;
-          e.target.checked ? selected.add(id) : selected.delete(id);
-          updateSelection();
-        };
-        $('selectPage').onclick = () => {
-          matches().slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).forEach(p => selected.add(p.id));
-          render();
-        };
-        $('clearSelection').onclick = () => {
-          selected.clear();
-          render();
+        $('gallery').onclick = event => {
+          const button = event.target.closest('[data-view]');
+          if (button) openViewer(button.dataset.view);
         };
 
-        function changePage(d) {
-          page += d;
+        function changePage(direction) {
+          page += direction;
           render();
           $('album').scrollIntoView({
             behavior: 'smooth'
@@ -3709,226 +3526,31 @@
         $('prevPage').onclick = () => changePage(-1);
         $('nextPage').onclick = () => changePage(1);
 
-        // 编辑模式：直接从分类栏新增分类
-        $('addCategory').onclick = () => {
-          if (!editing) return;
-          $('categoryForm').reset();
-          $('categoryError').textContent = '';
-          $('categoryEditor').showModal();
-        };
-
-        $('categoryName').oninput = () => {
-          $('categoryError').textContent = '';
-        };
-
-        $('categoryForm').onsubmit = e => {
-          e.preventDefault();
-          if (!editing) return;
-          const name = $('categoryName').value.trim();
-          let error = '';
-
-          if (!name) {
-            error = '请输入分类名称。';
-          } else if (name.length > 30) {
-            error = '分类名称不能超过 30 字。';
-          } else if (['全部', '未分类'].includes(name) || name.includes(',')) {
-            error = '请勿使用「全部」「未分类」或英文逗号。';
-          } else if (state.tags.includes(name)) {
-            error = '这个分类已存在，请换一个名称。';
-          }
-
-          if (error) {
-            $('categoryError').textContent = error;
-            $('categoryName').focus();
-            return;
-          }
-
-          state.tags.push(name);
-          save();
-          render();
-          $('categoryEditor').close();
-          toast('已添加分类「' + name + '」。');
-        };
-
-        $('cancelCategory').onclick = () => $('categoryEditor').close();
-
-        // 删除分类：照片、标题与其他标签保持不变
-        function updateCategoryDeleteImpact() {
-          const names = checked($('categoryDeletePicker'));
-          const affected = state.photos.filter(photo =>
-            photo.tags.some(tag => names.includes(tag))).length;
-          $('confirmCategoryDelete').disabled = !names.length;
-          $('categoryDeleteImpact').textContent = names.length ?
-            '将删除 ' + names.length + ' 个分类，移除 ' + affected + ' 张照片上的对应标签。照片本身会保留。' :
-            '请选择要删除的分类。';
-        }
-
-        $('deleteCategory').onclick = () => {
-          if (!editing || !state.tags.length) return;
-          picker($('categoryDeletePicker'), state.tags, []);
-          updateCategoryDeleteImpact();
-          $('categoryDeleteEditor').showModal();
-        };
-
-        $('categoryDeletePicker').onchange = updateCategoryDeleteImpact;
-
-        $('categoryDeleteForm').onsubmit = e => {
-          e.preventDefault();
-          if (!editing) return;
-          const names = new Set(checked($('categoryDeletePicker')));
-          if (!names.size) return;
-
-          state.tags = state.tags.filter(tag => !names.has(tag));
-          state.photos.forEach(photo => {
-            photo.tags = photo.tags.filter(tag => !names.has(tag));
-          });
-          save();
-          render();
-          $('categoryDeleteEditor').close();
-          toast('已删除 ' + names.size + ' 个分类，照片已保留。');
-        };
-
-        $('cancelCategoryDelete').onclick = () => $('categoryDeleteEditor').close();
-
-        // 单张照片编辑
-        function picker(el, tags, checked) {
-          el.innerHTML = tags.map(t => '<label><input type="checkbox" value="' + esc(t) + '" ' + (
-            checked.includes(t) ? 'checked' : '') + '>' + esc(t) + '</label>').join('');
-        }
-
-        function checked(el) {
-          return [...el.querySelectorAll('input:checked')].map(x => x.value);
-        }
-
-        function openEditor(id) {
-          editingId = id;
-          const p = state.photos.find(x => x.id === id);
-          draftTags = [...state.tags];
-          $('editorFilename').textContent = p.filename;
-          $('editorImage').src = p.thumb;
-          $('photoTitle').value = p.title;
-          $('photoCaption').value = p.caption;
-          $('setCover').checked = state.cover === id;
-          $('newTag').value = '';
-          picker($('photoTags'), draftTags, p.tags);
-          $('editor').showModal();
-        }
-        $('addTag').onclick = () => {
-          const tag = $('newTag').value.trim();
-          if (!tag) return;
-          if (['全部', '未分类'].includes(tag) || tag.includes(',')) {
-            toast('请换一个标签名称，且不要使用英文逗号。');
-            return;
-          }
-          const existing = checked($('photoTags'));
-          if (!draftTags.includes(tag)) draftTags.push(tag);
-          picker($('photoTags'), draftTags, [...existing, tag]);
-          $('newTag').value = '';
-        };
-        $('newTag').onkeydown = e => {
-          if (e.key === 'Enter') {
-            e.preventDefault();
-            $('addTag').click();
-          }
-        };
-        $('photoForm').onsubmit = e => {
-          e.preventDefault();
-          const p = state.photos.find(x => x.id === editingId);
-          p.title = $('photoTitle').value.trim();
-          p.caption = $('photoCaption').value.trim();
-          state.tags = draftTags;
-          p.tags = checked($('photoTags'));
-          if ($('setCover').checked) {
-            state.cover = p.id;
-            state.coverImage = p.src;
-          }
-          save();
-          cover();
-          render();
-          $('editor').close();
-          toast('已保存这一帧。');
-        };
-        $('cancelEditor').onclick = () => $('editor').close();
-
-        // 批量分类
-        $('batchTags').onclick = () => {
-          picker($('batchPicker'), state.tags, []);
-          $('replaceTags').checked = false;
-          $('batchTitle').textContent = '为 ' + selected.size + ' 张照片设置标签';
-          $('batchEditor').showModal();
-        };
-        $('batchForm').onsubmit = e => {
-          e.preventDefault();
-          const tags = checked($('batchPicker')),
-            replace = $('replaceTags').checked;
-          if (!tags.length && !replace) {
-            toast('请先勾选标签；清空标签时请勾选「替换」。');
-            return;
-          }
-          state.photos.filter(p => selected.has(p.id)).forEach(p => p.tags = replace ? [...tags] : [
-            ...new Set([...p.tags, ...tags])
-          ]);
-          save();
-          $('batchEditor').close();
-          selected.clear();
-          render();
-          toast('已完成批量分类。');
-        };
-        $('cancelBatch').onclick = () => $('batchEditor').close();
-
-        // 影集设置
-        $('albumSettings').onclick = () => {
-          $('albumTitle').value = state.title;
-          $('albumAuthor').value = state.author;
-          $('albumTags').value = state.tags.join('\n');
-          $('settings').showModal();
-        };
-        $('settingsForm').onsubmit = e => {
-          e.preventDefault();
-          const tags = [...new Set($('albumTags').value.split('\n').map(t => t.trim()).filter(
-            Boolean))];
-          if (tags.some(t => ['全部', '未分类'].includes(t) || t.includes(',') || t.length > 30)) {
-            toast('标签请勿使用「全部」「未分类」、英文逗号，且不超过 30 字。');
-            return;
-          }
-          state.title = $('albumTitle').value.trim() || '印象随园';
-          state.author = $('albumAuthor').value.trim();
-          state.tags = tags;
-          state.photos.forEach(p => p.tags = p.tags.filter(t => tags.includes(t)));
-          save();
-          cover();
-          render();
-          $('settings').close();
-          toast('影集设置已保存。');
-        };
-        $('cancelSettings').onclick = () => $('settings').close();
-
-        // 大图浏览与自动播放
+        // 照片放大、键盘切换和自动放映。
         function showPhoto() {
-          const p = viewerList[viewerIndex];
-          $('viewerImage').src = p.src;
-          $('viewerImage').alt = title(p) || '校园照片';
-          $('viewerTitle').textContent = title(p);
-          $('viewerCaption').textContent = [p.tags.join(' · '), p.caption].filter(Boolean).join('\n');
-          $('viewerPosition').textContent = String(viewerIndex + 1).padStart(2, '0') + ' / ' +
-            viewerList.length;
+          const photo = viewerList[viewerIndex];
+          $('viewerImage').src = photo.src;
+          $('viewerImage').alt = photo.title || '校园照片';
+          $('viewerTitle').textContent = photo.title || '';
+          $('viewerCaption').textContent = [photo.tags.join(' · '), photo.caption]
+            .filter(Boolean).join('\n');
           $('prevPhoto').disabled = viewerList.length < 2;
           $('nextPhoto').disabled = viewerList.length < 2;
           $('playPause').disabled = viewerList.length < 2;
         }
 
         function openViewer(id, auto = false) {
-          viewerList = matches();
+          viewerList = matchingPhotos();
           if (!viewerList.length) return;
-          viewerIndex = Math.max(0, viewerList.findIndex(p => p.id === id));
+          viewerIndex = Math.max(0, viewerList.findIndex(photo => photo.id === id));
           showPhoto();
           $('viewer').showModal();
           document.body.classList.add('no-scroll');
           if (auto && viewerList.length > 1) play();
         }
 
-        function step(d) {
-          viewerIndex = (viewerIndex + d + viewerList.length) % viewerList.length;
+        function step(direction) {
+          viewerIndex = (viewerIndex + direction + viewerList.length) % viewerList.length;
           showPhoto();
         }
 
@@ -3943,6 +3565,7 @@
           timer = setInterval(() => step(1), 4500);
           $('playPause').textContent = 'Ⅱ 暂停播放';
         }
+
         $('playPause').onclick = () => timer ? stop() : play();
         $('prevPhoto').onclick = () => {
           stop();
@@ -3958,70 +3581,30 @@
           $('viewerImage').removeAttribute('src');
           document.body.classList.remove('no-scroll');
         });
-        $('viewer').addEventListener('keydown', e => {
-          if (e.key === 'ArrowRight') {
-            e.preventDefault();
+        $('viewer').addEventListener('keydown', event => {
+          if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            event.preventDefault();
             stop();
-            step(1);
+            step(event.key === 'ArrowRight' ? 1 : -1);
           }
-          if (e.key === 'ArrowLeft') {
-            e.preventDefault();
-            stop();
-            step(-1);
-          }
-          if (e.code === 'Space' && e.target.tagName !== 'BUTTON') {
-            e.preventDefault();
-            if (viewerList.length > 1) timer ? stop() : play();
+          if (event.code === 'Space' && event.target.tagName !== 'BUTTON' && viewerList.length >
+            1) {
+            event.preventDefault();
+            timer ? stop() : play();
           }
         });
-        $('slideshow').onclick = () => openViewer(matches()[0]?.id, true);
+        $('viewer').addEventListener('click', event => {
+          if (event.target !== $('viewer')) return;
+          const bounds = $('viewer').getBoundingClientRect();
+          if (event.clientX < bounds.left || event.clientX > bounds.right ||
+            event.clientY < bounds.top || event.clientY > bounds.bottom) $('viewer').close();
+        });
+        $('slideshow').onclick = () => openViewer(matchingPhotos()[0]?.id, true);
         document.addEventListener('visibilitychange', () => {
           if (document.hidden) stop();
         });
-        document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => {
-          if (e.target === d) {
-            const r = d.getBoundingClientRect();
-            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r
-              .bottom) d.close();
-          }
-        }));
-        document.addEventListener('error', e => {
-          if (e.target.tagName === 'IMG') {
-            e.target.alt = '图片未找到：请检查图片与 HTML 的相对位置，保留子文件夹结构';
-          }
-        }, true);
 
-        // 导出可离线打开的 HTML
-        $('export').onclick = () => {
-          save();
-          const clone = document.documentElement.cloneNode(true);
-          clone.querySelector('#album-data').textContent = JSON.stringify(state, null, 2).replace(
-            /</g,
-            '\\u003c');
-          clone.querySelector('#gallery').innerHTML = '';
-          clone.querySelector('#filters').innerHTML = '';
-          clone.querySelectorAll('dialog').forEach(d => d.removeAttribute('open'));
-          clone.querySelector('body').classList.remove('no-scroll');
-          clone.querySelector('#viewerImage').removeAttribute('src');
-          clone.querySelector('#toast').textContent = '';
-          clone.querySelector('#search').setAttribute('value', '');
-          const blob = new Blob(['<!doctype html>\n' + clone.outerHTML], {
-              type: 'text/html;charset=utf-8'
-            }),
-            url = URL.createObjectURL(blob),
-            a = document.createElement('a');
-          a.href = url;
-          a.download = 'index.html';
-          a.click();
-          setTimeout(() => URL.revokeObjectURL(url), 10000);
-          toast('分类已写入 index.html。请用新文件替换原首页，再上传到 GitHub。');
-        };
-        $('editToggle').textContent = '整理照片';
-        $('editToggle').setAttribute('aria-pressed', 'false');
-        $('albumSettings').hidden = true;
-        $('batchbar').hidden = true;
-
-        // 右上角菜单与滚动导航
+        // 顶部菜单与首页。
         function setMenu(open, focus = false) {
           $('albumMenu').hidden = !open;
           $('menuToggle').setAttribute('aria-expanded', String(open));
@@ -4029,16 +3612,16 @@
           if (focus) $('menuToggle').focus();
         }
         $('menuToggle').onclick = () => setMenu($('albumMenu').hidden);
-        $('albumMenu').addEventListener('click', e => {
-          if (e.target.closest('button')) setMenu(false);
+        $('albumMenu').addEventListener('click', event => {
+          if (event.target.closest('button')) setMenu(false);
         });
-        document.addEventListener('click', e => {
-          if (!e.target.closest('.cover-actions')) setMenu(false);
+        document.addEventListener('click', event => {
+          if (!event.target.closest('.cover-actions')) setMenu(false);
         });
-        document.addEventListener('keydown', e => {
-          if (e.key === 'Escape' && !$('albumMenu').hidden) {
+        document.addEventListener('keydown', event => {
+          if (event.key === 'Escape' && !$('albumMenu').hidden) {
             setMenu(false, true);
-            e.preventDefault();
+            event.preventDefault();
           }
         });
 
@@ -4048,10 +3631,22 @@
         addEventListener('scroll', updateCoverNav, {
           passive: true
         });
-        updateCoverNav();
-        setMenu(false);
+        document.addEventListener('error', event => {
+          if (event.target.tagName === 'IMG') {
+            event.target.alt = '图片未找到：请检查图片与 HTML 的相对位置，保留子文件夹结构';
+          }
+        }, true);
 
-        cover();
+        const cover = album.photos.find(photo => photo.id === album.cover) || album.photos[0];
+        $('cover').src = album.coverImage || cover?.src || '';
+        document.querySelectorAll('[data-album-title]').forEach(element => {
+          element.textContent = album.title;
+        });
+        $('credit').textContent = album.author || '';
+        document.title = album.title + ' · 校园微影集';
+        $('search').value = '';
+        setMenu(false);
+        updateCoverNav();
         render();
       })();
     </script>
