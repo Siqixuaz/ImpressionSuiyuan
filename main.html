@@ -1,0 +1,3779 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="印象随园，一本可以亲手整理的校园微影集。">
+    <title>印象随园 · 校园微影集</title>
+    <style>
+      /* 视觉素材沿用南京师范大学官网；图片路径相对于本 HTML。 */
+
+      /* 主题变量 */
+      :root {
+        --paper: #fff;
+        --ink: #217050;
+        --muted: #747b75;
+        --line: #dbe8df;
+        --gold: #cdab7f;
+        --orange: #ff8359;
+        --serif: 'Source Han Serif SC', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+        --sans: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+      }
+
+      /* 基础样式与按钮 */
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 32px;
+      }
+
+      body {
+        margin: 0;
+        color: #333;
+        background: #fff;
+        font: 14px var(--sans);
+      }
+
+      button,
+      input,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+        color: inherit;
+      }
+
+      button:disabled {
+        opacity: .4;
+        cursor: default;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      button,
+      a,
+      input,
+      textarea {
+        touch-action: manipulation;
+      }
+
+      button:focus-visible,
+      a:focus-visible,
+      input:focus-visible,
+      textarea:focus-visible {
+        outline: 3px solid var(--orange);
+        outline-offset: 4px;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+
+      .plain {
+        border: 0;
+        background: none;
+        padding: 8px;
+      }
+
+      .outline {
+        background: transparent;
+        border: 1px solid var(--ink);
+        padding: 10px 18px;
+        color: var(--ink);
+      }
+
+      .primary {
+        background: var(--ink);
+        border: 1px solid var(--ink);
+        color: #fff;
+        padding: 12px 20px;
+      }
+
+      /* 顶部导航与首屏基础样式 */
+      header {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        z-index: 5;
+        height: 126px;
+        padding: 24px 4.2%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: white;
+        background: linear-gradient(#0f3b31c9, transparent);
+        border-top: 3px solid transparent;
+        border-image: linear-gradient(90deg, #ff8359, #efc33e) 1;
+        gap: 30px;
+      }
+
+      .brand {
+        display: block;
+        flex-shrink: 0;
+      }
+
+      .official-logo {
+        display: block;
+        width: 282px;
+        height: auto;
+        filter: brightness(0) invert(1);
+      }
+
+      .hero {
+        height: 100svh;
+        min-height: 660px;
+        max-height: 1080px;
+        position: relative;
+        overflow: hidden;
+        background: #164a37;
+        color: white;
+      }
+
+      .hero>#cover {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 45%;
+      }
+
+      .hero:after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, #082c2480, transparent 80%), linear-gradient(0deg, #092c21bd, transparent 55%);
+        pointer-events: none;
+      }
+
+      .eyebrow {
+        font-size: 10px;
+        letter-spacing: 3px;
+      }
+
+      .hero h1 {
+        font: clamp(54px, 5.3vw, 82px)/1.25 var(--serif);
+        letter-spacing: .24em;
+        margin: 20px 0 22px;
+        text-shadow: 0 3px 18px #173c3460;
+      }
+
+      .hero .poem {
+        font: 24px/1.8 var(--serif);
+        letter-spacing: 4px;
+      }
+
+      .hero .enter {
+        display: inline-flex;
+        align-items: center;
+        gap: 42px;
+        margin-top: 22px;
+        font-size: 13px;
+        padding: 10px 0;
+        border-bottom: 1px solid #ffffff70;
+      }
+
+      main {
+        max-width: 1400px;
+        margin: auto;
+        padding: 0 5.5%;
+        position: relative;
+      }
+
+      .tit-bg {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        max-width: 100%;
+        max-height: 100%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+      }
+
+      .section-heading .eyebrow {
+        color: #a58e6d;
+        font-size: 10px;
+        letter-spacing: 4px;
+        text-align: center;
+      }
+
+      /* 照片筛选、卡片和分页 */
+      #album {
+        padding-top: 5px;
+        position: relative;
+      }
+
+      .section-top {
+        position: relative;
+        margin: 8px 0 18px;
+        min-height: 155px;
+      }
+
+      .section-heading {
+        width: 100%;
+      }
+
+      .section-heading h2 {
+        padding-top: 56px;
+        height: 128px;
+        font: bold 38px/1.1 var(--serif);
+        text-align: center;
+        color: #217050;
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        letter-spacing: 3px;
+      }
+
+      .section-heading small {
+        display: block;
+        text-align: center;
+        font-size: 10px;
+        letter-spacing: 4px;
+        color: #a58e6d;
+      }
+
+      .tools {
+        z-index: 2;
+        position: absolute;
+        right: 0;
+        top: 59px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .tools button {
+        font-size: 13px;
+        padding: 8px 12px;
+      }
+
+      .filterline {
+        display: flex;
+        justify-content: space-between;
+        align-items: start;
+        gap: 20px;
+        margin-top: 20px;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 12px;
+      }
+
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        align-items: center;
+      }
+
+      .chip {
+        background: none;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        padding: 11px 14px;
+        font-size: 14px;
+        color: #5c695f;
+        white-space: nowrap;
+      }
+
+      .chip.active {
+        border-bottom-color: var(--orange);
+        color: #217050;
+        font-weight: bold;
+      }
+
+      .chip:hover {
+        color: #217050;
+        background: #f1f7f2;
+      }
+
+      .chip span {
+        font-size: 10px;
+        font-weight: normal;
+        color: #8d998b;
+        margin-left: 7px;
+      }
+
+      .search {
+        height: 39px;
+        max-width: 210px;
+        width: 100%;
+        background: #f5f8f4;
+        border: 1px solid #e1e9df;
+        padding: 0 12px;
+        color: #333;
+      }
+
+      .status {
+        font-size: 12px;
+        color: #909a8b;
+        margin: 18px 0 26px;
+        min-height: 18px;
+      }
+
+      .gallery {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 28px;
+        align-items: start;
+      }
+
+      .gallery figure {
+        margin: 0;
+        position: relative;
+        min-width: 0;
+        background: white;
+        border-bottom: 1px solid #e8eee4;
+        transition: box-shadow .25s, transform .25s;
+      }
+
+      .gallery figure:hover {
+        box-shadow: 0 8px 30px #21705015;
+        transform: translateY(-3px);
+      }
+
+      .photo-btn {
+        display: block;
+        padding: 0;
+        border: 0;
+        background: #e4ece1;
+        width: 100%;
+        aspect-ratio: 4/3;
+        text-align: left;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .photo-btn img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform .7s;
+      }
+
+      .photo-btn:hover img {
+        transform: scale(1.04);
+      }
+
+      .photo-btn:after {
+        content: '查看照片 ↗';
+        position: absolute;
+        bottom: 14px;
+        right: 14px;
+        background: #217050e6;
+        color: white;
+        font-size: 11px;
+        padding: 8px 12px;
+        opacity: 0;
+        transition: opacity .2s;
+      }
+
+      .photo-btn:hover:after,
+      .photo-btn:focus-visible:after {
+        opacity: 1;
+      }
+
+      .gallery figcaption {
+        padding: 18px 12px 22px;
+      }
+
+      .photo-kicker {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: #b49a77;
+        font-size: 10px;
+        letter-spacing: 1px;
+      }
+
+      .tagtext {
+        color: #79967e;
+      }
+
+      .photo-title {
+        font: 22px/1.5 var(--serif);
+        margin: 10px 0 0;
+        color: #217050;
+        overflow-wrap: anywhere;
+        letter-spacing: 1px;
+      }
+
+      .photo-caption {
+        font-size: 12px;
+        line-height: 1.9;
+        color: #7c8478;
+        white-space: pre-line;
+        overflow-wrap: anywhere;
+        margin: 8px 0 0;
+      }
+
+      .filename {
+        font-size: 10px;
+        color: #98a08f;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-top: 10px;
+      }
+
+      .edit-photo {
+        background: none;
+        border: 1px solid #cddbc9;
+        padding: 7px 12px;
+        font-size: 12px;
+        color: #217050;
+        margin-top: 12px;
+      }
+
+      .select-photo {
+        display: none;
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 1;
+        background: #fffffff2;
+        padding: 8px;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: #217050;
+      }
+
+      .editing .select-photo {
+        display: flex;
+      }
+
+      .select-photo input {
+        width: 17px;
+        height: 17px;
+        accent-color: #217050;
+        margin: 0;
+      }
+
+      .editing figure:has(input:checked) {
+        outline: 3px solid #cdab7f;
+        outline-offset: 3px;
+      }
+
+      .batchbar {
+        position: sticky;
+        top: 10px;
+        z-index: 10;
+        padding: 13px 16px;
+        margin-bottom: 24px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        background: #edf5ec;
+        border: 1px solid #c7dac5;
+        box-shadow: 0 4px 20px #21705012;
+        color: #217050;
+      }
+
+      .batchbar button {
+        padding: 7px 10px;
+      }
+
+      .empty {
+        grid-column: 1/-1;
+        text-align: center;
+        padding: 65px 20px;
+        border: 1px dashed #c3d6be;
+        line-height: 2;
+        color: #82917d;
+      }
+
+      .empty strong {
+        display: block;
+        color: #217050;
+        font: 26px var(--serif);
+        margin-bottom: 16px;
+      }
+
+      .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 24px;
+        margin: 48px 0 65px;
+        color: #217050;
+        font-size: 12px;
+      }
+
+      .pagination button {
+        border: 1px solid #d4e1ce;
+        background: none;
+        padding: 11px 22px;
+        color: #217050;
+      }
+
+      .official-footer {
+        background: #217050;
+        color: white;
+        position: relative;
+        margin-top: 65px;
+        padding: 46px 5.5% 0;
+        display: block;
+        border: 0;
+      }
+
+      .official-footer:before {
+        content: '';
+        position: absolute;
+        top: -72px;
+        left: 0;
+        width: 100%;
+        height: 74px;
+        background: url('官网/d-footer-bg2.png') center bottom/auto 74px repeat-x;
+        pointer-events: none;
+      }
+
+      .official-footer:after {
+        content: '';
+        position: absolute;
+        top: -84px;
+        left: 0;
+        width: 100%;
+        height: 84px;
+        background: url('官网/d-footer-bg3.png') center bottom/auto 84px repeat-x;
+        pointer-events: none;
+        z-index: -1;
+      }
+
+      .footer-caption {
+        border-top: 1px solid #ffffff30;
+        padding: 22px 0;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        max-width: 1246px;
+        margin: auto;
+        font-size: 11px;
+        color: #d0e0d3;
+        line-height: 1.8;
+      }
+
+      .footer-caption small {
+        font-size: 10px;
+      }
+
+      /* 大图浏览与整理弹窗 */
+      dialog {
+        border: 0;
+        padding: 0;
+        max-width: calc(100vw - 32px);
+        color: #333;
+        background: white;
+      }
+
+      dialog::backdrop {
+        background: #061b14eb;
+        backdrop-filter: blur(6px);
+      }
+
+      .lightbox {
+        width: min(1440px, 96vw);
+        height: 92svh;
+        max-height: 1000px;
+        overflow: hidden;
+        background: #102b20;
+        color: #eee;
+      }
+
+      .lightbox-inner {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .light-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 24px;
+        gap: 15px;
+        font-size: 12px;
+      }
+
+      .light-head button,
+      .light-controls button {
+        background: none;
+        border: 1px solid #ffffff50;
+        color: inherit;
+        padding: 8px 14px;
+      }
+
+      .light-image {
+        flex: 1;
+        min-height: 0;
+        width: 100%;
+        object-fit: contain;
+        padding: 0 30px;
+      }
+
+      .light-bottom {
+        padding: 18px 25px;
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        align-items: center;
+      }
+
+      .light-bottom h3 {
+        font: 24px var(--serif);
+        margin: 0 0 8px;
+      }
+
+      .light-bottom p {
+        font-size: 12px;
+        color: #b3c2b5;
+        margin: 0;
+        line-height: 1.8;
+        max-width: 650px;
+        white-space: pre-line;
+        max-height: 65px;
+        overflow: auto;
+      }
+
+      .light-controls {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        white-space: nowrap;
+      }
+
+      .modal {
+        width: 560px;
+        padding: 30px;
+        max-height: 90svh;
+        border-top: 4px solid #217050;
+      }
+
+      .modal h2 {
+        font: 25px var(--serif);
+        margin: 0 0 12px;
+        color: #217050;
+      }
+
+      .modal p {
+        font-size: 12px;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      .formrow {
+        display: block;
+        margin: 22px 0;
+        font-size: 12px;
+      }
+
+      .formrow input,
+      .formrow textarea {
+        display: block;
+        width: 100%;
+        padding: 11px;
+        border: 1px solid #bec7b7;
+        margin-top: 9px;
+        background: #fff;
+        color: #333;
+      }
+
+      .formrow textarea {
+        min-height: 80px;
+        resize: vertical;
+      }
+
+      .tagpicker {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin: 10px 0 18px;
+      }
+
+      .tagpicker label {
+        padding: 8px 10px;
+        border: 1px solid var(--line);
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .tagpicker input {
+        accent-color: var(--ink);
+      }
+
+      .newtag {
+        display: flex;
+        gap: 8px;
+      }
+
+      .newtag input {
+        min-width: 0;
+        flex: 1;
+        border: 1px solid var(--line);
+        padding: 10px;
+        background: white;
+      }
+
+      .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 25px;
+      }
+
+      .editor-image {
+        height: 110px;
+        width: 100%;
+        object-fit: contain;
+        margin-top: 5px;
+        background: #edf3e9;
+      }
+
+      .hint {
+        font-size: 11px;
+        line-height: 1.8;
+        color: var(--muted);
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--ink);
+        color: white;
+        padding: 13px 23px;
+        z-index: 50;
+        max-width: 90vw;
+        text-align: center;
+        font-size: 12px;
+        box-shadow: 0 6px 30px #0002;
+      }
+
+      .toast:empty {
+        display: none;
+      }
+
+      .error {
+        padding: 20px;
+        background: #ffe9ce;
+        line-height: 1.8;
+      }
+
+      .no-scroll {
+        overflow: hidden;
+      }
+
+      @media(max-width:1050px) {
+        .official-logo {
+          width: 245px;
+        }
+
+        header {
+          padding-left: 4%;
+          padding-right: 4%;
+        }
+
+        .gallery {
+          gap: 22px;
+        }
+
+        .tools {
+          position: static;
+          justify-content: center;
+          margin-top: 20px;
+        }
+
+        .section-top {
+          margin-bottom: 20px;
+        }
+
+        .filterline {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .search {
+          max-width: 100%;
+        }
+      }
+
+      @media(max-width:760px) {
+        header {
+          height: 110px;
+          padding: 18px 5%;
+          align-items: start;
+        }
+
+        .official-logo {
+          width: 210px;
+        }
+
+        .hero {
+          min-height: 600px;
+          height: 86svh;
+        }
+
+        .hero h1 {
+          font-size: 62px;
+        }
+
+        .hero .poem {
+          font-size: 21px;
+          letter-spacing: 3px;
+        }
+
+        .section-heading h2 {
+          font-size: 32px;
+        }
+
+        .gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 22px 16px;
+        }
+
+        .photo-title {
+          font-size: 19px;
+        }
+
+        .official-footer {
+          padding-top: 24px;
+        }
+      }
+
+      @media(max-width:480px) {
+        header {
+          height: 100px;
+          gap: 12px;
+          padding: 18px 5%;
+        }
+
+        .official-logo {
+          width: 174px;
+        }
+
+        .hero {
+          height: 88svh;
+          min-height: 580px;
+        }
+
+        .hero h1 {
+          font-size: 51px;
+          letter-spacing: .16em;
+        }
+
+        .hero .eyebrow {
+          font-size: 8px;
+          letter-spacing: 1.8px;
+        }
+
+        .hero .poem {
+          font-size: 17px;
+          letter-spacing: 2px;
+        }
+
+        .hero .enter {
+          font-size: 12px;
+          margin-top: 15px;
+        }
+
+        .section-heading small {
+          font-size: 8px;
+          letter-spacing: 2px;
+        }
+
+        .section-heading h2 {
+          font-size: 29px;
+          letter-spacing: 2px;
+        }
+
+        .section-top {
+          margin-top: 0;
+        }
+
+        .filters {
+          gap: 0;
+        }
+
+        .chip {
+          font-size: 12px;
+          padding: 10px 11px;
+        }
+
+        .chip span {
+          margin-left: 5px;
+        }
+
+        .status {
+          font-size: 11px;
+          margin-bottom: 18px;
+        }
+
+        .gallery {
+          gap: 20px 12px;
+        }
+
+        .gallery figcaption {
+          padding: 12px 6px 16px;
+        }
+
+        .photo-title {
+          font-size: 17px;
+          letter-spacing: 0;
+        }
+
+        .photo-kicker {
+          font-size: 9px;
+          flex-wrap: wrap;
+          gap: 5px;
+        }
+
+        .photo-caption {
+          font-size: 11px;
+        }
+
+        .batchbar {
+          font-size: 11px;
+          gap: 8px;
+        }
+
+        .batchbar button {
+          font-size: 11px;
+        }
+
+        .pagination {
+          gap: 16px;
+          margin: 35px 0 45px;
+        }
+
+        .pagination button {
+          padding: 9px 14px;
+        }
+
+        .footer-caption {
+          flex-direction: column;
+          gap: 8px;
+          font-size: 10px;
+        }
+
+        .footer-caption small {
+          font-size: 9px;
+        }
+
+        .lightbox {
+          height: 94svh;
+          max-width: 100vw;
+          width: 100vw;
+        }
+
+        .light-image {
+          padding: 0 8px;
+        }
+
+        .light-head {
+          padding: 12px;
+          font-size: 10px;
+        }
+
+        .light-bottom {
+          flex-direction: column;
+          align-items: stretch;
+          padding: 16px;
+        }
+
+        .light-controls {
+          justify-content: space-between;
+        }
+
+        .light-bottom h3 {
+          font-size: 21px;
+        }
+
+        .modal {
+          padding: 23px;
+        }
+      }
+
+      @media(prefers-reduced-motion:reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        * {
+          transition: none !important;
+          animation: none !important;
+        }
+      }
+
+      @media print {
+
+        header,
+        .hero,
+        .filters,
+        .tools,
+        .search,
+        .pagination,
+        .batchbar,
+        .edit-photo,
+        .select-photo,
+        dialog,
+        .toast {
+          display: none !important;
+        }
+
+        .gallery {
+          display: block;
+        }
+
+        .gallery figure {
+          break-inside: avoid;
+          display: inline-block;
+          vertical-align: top;
+          width: 46%;
+          margin: 0 2% 20px;
+        }
+
+        .photo-btn {
+          aspect-ratio: auto;
+        }
+
+        .photo-btn img {
+          height: 200px;
+          object-fit: contain;
+        }
+
+        main {
+          padding: 0;
+        }
+
+        .official-footer:before,
+        .official-footer:after {
+          display: none;
+        }
+
+        .section-top {
+          margin-top: 0;
+        }
+      }
+
+      /* 水墨背景 */
+      .album-backdrop {
+        background: #f2f7f3 url('水墨校园背景.png') center top/cover no-repeat;
+        padding-bottom: 65px;
+      }
+
+      .album-backdrop .gallery figure {
+        background: rgba(255, 255, 255, .78);
+      }
+
+      .album-backdrop+.official-footer {
+        margin-top: 0;
+      }
+
+      .hero {
+        height: 100svh;
+        min-height: 0;
+        max-height: none;
+      }
+
+      .hero .hero-wordmark {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        place-items: center;
+      }
+
+      .hero-wordmark a {
+        display: block;
+        width: clamp(140px, 30vw, 420px);
+        max-width: 45vw;
+        line-height: 0;
+      }
+
+      .hero-wordmark img {
+        display: block;
+        width: 100%;
+        height: auto;
+        filter: brightness(0) invert(1);
+      }
+
+      .hero:after {
+        background: linear-gradient(#102e2730, #102e2755);
+      }
+
+      .section-top {
+        padding-top: 20px;
+        min-height: 165px;
+      }
+
+      .tools {
+        position: static;
+        justify-content: center;
+        margin: 22px 0 25px;
+      }
+
+      .tools .plain {
+        font-size: 13px;
+        color: #217050;
+      }
+
+      .photo-title:empty,
+      .light-bottom h3:empty {
+        display: none;
+      }
+
+      .gallery figcaption:empty {
+        display: none;
+      }
+
+      .official-footer {
+        padding-top: 0;
+      }
+
+      @media(max-width:480px) {
+        .hero-wordmark a {
+          width: 43vw;
+        }
+
+        .tools {
+          gap: 8px;
+          margin: 20px 0;
+        }
+
+        .tools button {
+          font-size: 12px;
+          padding: 8px 10px;
+        }
+      }
+
+      html {
+        scroll-padding-top: 110px;
+      }
+
+      .cover-nav {
+        position: fixed;
+        inset: 0 0 auto;
+        height: 100px;
+        padding: 20px 4.2%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        z-index: 20;
+        border: 0;
+        border-top: 3px solid transparent;
+        border-image: linear-gradient(90deg, #ff8359, #efc33e) 1;
+        background: linear-gradient(#163e33a6, transparent);
+        transition: background .25s, box-shadow .25s;
+      }
+
+      .cover-nav.scrolled {
+        background: #217050f5;
+        box-shadow: 0 3px 18px #0a302a20;
+      }
+
+      .cover-nav .official-logo {
+        width: 260px;
+        height: auto;
+        filter: none;
+      }
+
+      .cover-actions {
+        position: relative;
+        flex-shrink: 0;
+      }
+
+      .menu-toggle {
+        width: 52px;
+        height: 52px;
+        padding: 13px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        border: 1.5px solid #e1ad6a;
+        border-radius: 43%;
+        color: #e1ad6a;
+        background: transparent;
+        transition: background .2s;
+      }
+
+      .menu-toggle:hover,
+      .menu-toggle[aria-expanded="true"] {
+        background: #164a37bb;
+      }
+
+      .menu-toggle span {
+        display: block;
+        width: 23px;
+        height: 2px;
+        background: currentColor;
+        transition: transform .2s, opacity .2s;
+      }
+
+      .menu-toggle[aria-expanded="true"] span:first-child {
+        transform: translateY(8px) rotate(45deg);
+      }
+
+      .menu-toggle[aria-expanded="true"] span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .menu-toggle[aria-expanded="true"] span:last-child {
+        transform: translateY(-8px) rotate(-45deg);
+      }
+
+      .cover-actions .tools {
+        position: absolute;
+        inset: calc(100% + 16px) 0 auto auto;
+        z-index: 21;
+        width: 190px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+        align-items: stretch;
+        margin: 0;
+        padding: 8px 0;
+        background: #fffdf6f7;
+        border-top: 2px solid #ff8359;
+        box-shadow: 0 8px 30px #0a302a30;
+        backdrop-filter: blur(10px);
+      }
+
+      .cover-actions .tools:before {
+        content: '';
+        position: absolute;
+        right: 19px;
+        top: -9px;
+        border: 7px solid transparent;
+        border-bottom-color: #ff8359;
+        border-top: 0;
+      }
+
+      .cover-actions .tools button,
+      .cover-actions .tools .plain {
+        width: 100%;
+        text-align: left;
+        font: 15px var(--serif);
+        padding: 14px 22px;
+        border: 0;
+        background: none;
+        color: #217050;
+        margin: 0;
+      }
+
+      .cover-actions .tools button:hover,
+      .cover-actions .tools button:focus-visible {
+        background: #eaf1e7;
+      }
+
+      .section-top {
+        min-height: 150px;
+        padding-top: 20px;
+        margin-bottom: 0;
+      }
+
+      @media(max-width:760px) {
+        .cover-nav {
+          height: 85px;
+          padding: 16px 5%;
+        }
+
+        .cover-nav .official-logo {
+          width: 210px;
+        }
+
+        .menu-toggle {
+          width: 46px;
+          height: 46px;
+          padding: 11px;
+        }
+
+        .cover-actions .tools {
+          width: 180px;
+        }
+      }
+
+      @media(max-width:480px) {
+        .cover-nav {
+          height: 78px;
+          padding: 14px 5%;
+          gap: 15px;
+        }
+
+        .cover-nav .official-logo {
+          width: 180px;
+        }
+
+        .menu-toggle {
+          width: 42px;
+          height: 42px;
+          gap: 5px;
+        }
+
+        .menu-toggle span {
+          width: 20px;
+        }
+
+        .menu-toggle[aria-expanded="true"] span:first-child {
+          transform: translateY(7px) rotate(45deg);
+        }
+
+        .menu-toggle[aria-expanded="true"] span:last-child {
+          transform: translateY(-7px) rotate(-45deg);
+        }
+      }
+
+      @media print {
+        .cover-nav {
+          display: none;
+        }
+      }
+
+      /* 编辑模式下的分类入口 */
+      .category-controls {
+        display: flex;
+        flex: 1;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 6px;
+        min-width: 0;
+      }
+
+      .category-controls .filters {
+        min-width: 0;
+      }
+
+      .add-category {
+        border: 1px dashed #9dbba2;
+        color: #217050;
+        padding: 9px 13px;
+      }
+
+      .modal .category-error {
+        color: #a43a30;
+      }
+
+      /* 编辑模式下的分类删除入口 */
+      .delete-category {
+        color: #9b4a3d;
+        border-color: #c9a69c;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- 顶部校徽与功能菜单 -->
+  <header class="cover-nav" aria-label="影集导航">
+      <a class="brand" href="#top" aria-label="返回首页"><img class="official-logo" src="%E5%AE%98%E7%BD%91/d-logo1.png" alt="南京师范大学 Nanjing Normal University"></a>
+      <div class="cover-actions">
+        <button class="menu-toggle" id="menuToggle" type="button" aria-label="打开影集菜单" aria-expanded="false" aria-controls="albumMenu"><span></span><span></span><span></span></button>
+        <div class="tools" id="albumMenu" hidden>
+          <button id="editToggle" class="plain" aria-pressed="false">整理照片</button>
+          <button id="export" class="outline">导出影集 ↗</button>
+          <button class="outline" id="slideshow">▷ 放映影集</button>
+          <button class="outline" id="albumSettings" hidden>影集设置</button>
+        </div>
+      </div>
+    </header>
+    <!-- 首页：航拍背景与居中题字 -->
+  <section class="hero" id="top" aria-label="随园印象封面">
+      <img id="cover" alt="校园影集封面" fetchpriority="high">
+      <h1 class="hero-wordmark"><a href="#album" aria-label="浏览影集"><img src="%E9%9A%8F%E5%9B%AD%E5%8D%B0%E8%B1%A1-%E9%A2%98%E5%AD%97.png" alt="随园印象" fetchpriority="high"></a></h1>
+    </section>
+    <!-- 照片浏览区 -->
+  <div class="album-backdrop">
+      <main>
+        <section id="album" aria-label="照片影集">
+          <div class="section-top">
+            <div class="section-heading">
+              <h2><img class="tit-bg" src="%E5%AE%98%E7%BD%91/d-tit-bg2.png" alt="">随园拾光</h2>
+            </div>
+          </div>
+          <div class="filterline">
+            <div class="category-controls">
+              <div class="filters" id="filters" aria-label="按标签筛选"></div>
+              <button class="chip add-category" id="addCategory" type="button" hidden>＋ 添加分类</button>
+              <button class="chip add-category delete-category" id="deleteCategory" type="button" hidden>－ 删除分类</button>
+            </div>
+            <input class="search" id="search" type="search" placeholder="搜索标题、标签、文件名" aria-label="搜索照片">
+          </div>
+          <p class="status" id="status" aria-live="polite"></p>
+          <div class="batchbar" id="batchbar" hidden>
+            <span id="selectedCount">已选 0 张</span>
+            <button class="plain" id="selectPage">全选本页</button>
+            <button class="plain" id="clearSelection">清空选择</button>
+            <button class="outline" id="batchTags">批量设置标签</button>
+            <span class="hint">修改保存在此浏览器；完成后请导出。</span>
+          </div>
+          <div class="gallery" id="gallery"></div>
+          <div class="pagination">
+            <button id="prevPage">← 上一页</button>
+            <span id="pageInfo"></span>
+            <button id="nextPage">下一页 →</button>
+          </div>
+        </section>
+      </main>
+    </div>
+    <footer class="official-footer">
+      <div class="footer-caption">
+        <span data-album-title>印象随园</span>
+        <span id="credit"></span>
+      </div>
+    </footer>
+    <dialog class="lightbox" id="viewer" aria-label="照片放大浏览">
+      <div class="lightbox-inner">
+        <div class="light-head">
+          <span id="viewerPosition" hidden></span>
+          <span>← → 切换 · 空格播放 / 暂停 · Esc 关闭</span>
+          <button id="closeViewer" aria-label="关闭大图">关闭 ×</button>
+        </div>
+        <img id="viewerImage" class="light-image" alt="">
+        <div class="light-bottom">
+          <div>
+            <h3 id="viewerTitle"></h3>
+            <p id="viewerCaption"></p>
+          </div>
+          <div class="light-controls">
+            <button id="prevPhoto" aria-label="上一张照片">←</button>
+            <button id="playPause">▷ 自动播放</button>
+            <button id="nextPhoto" aria-label="下一张照片">→</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
+    <dialog class="modal" id="editor" aria-labelledby="editorTitle">
+      <form id="photoForm">
+        <h2 id="editorTitle">整理这一帧</h2>
+        <p id="editorFilename"></p>
+        <img class="editor-image" id="editorImage" alt="当前编辑照片">
+        <label class="formrow">照片标题<input id="photoTitle" maxlength="60" placeholder="为这一帧取个名字（可留空）"></label>
+        <label class="formrow">照片寄语<textarea id="photoCaption" maxlength="600" placeholder="地点、拍摄故事，或想留住的心情……"></textarea></label>
+        <div>
+          分类标签
+          <span class="hint">可多选，地点由你们确定</span>
+        </div>
+        <div id="photoTags" class="tagpicker"></div>
+        <div class="newtag">
+          <input id="newTag" maxlength="30" placeholder="添加自定义标签" aria-label="新标签名称">
+          <button type="button" class="outline" id="addTag">添加</button>
+        </div>
+        <label class="formrow"><input type="checkbox" id="setCover" style="display:inline;width:auto;margin:0 8px 0 0">设为影集封面</label>
+        <div class="modal-actions">
+          <button class="outline" type="button" id="cancelEditor">取消</button>
+          <button class="primary" type="submit">保存修改</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog class="modal" id="batchEditor" aria-labelledby="batchTitle">
+      <form id="batchForm">
+        <h2 id="batchTitle">批量设置标签</h2>
+        <p>将勾选的标签添加到所选照片，保留它们已有的标签。</p>
+        <div id="batchPicker" class="tagpicker"></div>
+        <label class="formrow"><input type="checkbox" id="replaceTags" style="display:inline;width:auto;margin:0 8px 0 0">改为替换原有标签（不勾选则追加）</label>
+        <div class="modal-actions">
+          <button class="outline" type="button" id="cancelBatch">取消</button>
+          <button class="primary" type="submit">应用到所选照片</button>
+        </div>
+      </form>
+    </dialog>
+    <!-- 编辑模式：新增照片分类 -->
+    <dialog class="modal" id="categoryEditor" aria-labelledby="categoryEditorTitle">
+      <form id="categoryForm">
+        <h2 id="categoryEditorTitle">添加分类</h2>
+        <label class="formrow" for="categoryName">分类名称
+          <input id="categoryName" maxlength="30" required autofocus
+            placeholder="例如：德风园、100号楼"
+            aria-describedby="categoryError">
+        </label>
+        <p id="categoryError" class="category-error" role="alert"></p>
+        <div class="modal-actions">
+          <button class="outline" type="button" id="cancelCategory">取消</button>
+          <button class="primary" type="submit">添加分类</button>
+        </div>
+      </form>
+    </dialog>
+    <!-- 删除分类只移除标签，不删除照片 -->
+    <dialog class="modal" id="categoryDeleteEditor" aria-labelledby="categoryDeleteTitle">
+      <form id="categoryDeleteForm">
+        <h2 id="categoryDeleteTitle">删除分类</h2>
+        <p>勾选要删除的分类。照片会保留，没有其他分类的照片归入「未分类」。</p>
+        <div id="categoryDeletePicker" class="tagpicker"></div>
+        <p id="categoryDeleteImpact" aria-live="polite">请选择要删除的分类。</p>
+        <div class="modal-actions">
+          <button class="outline" type="button" id="cancelCategoryDelete">取消</button>
+          <button class="primary" type="submit" id="confirmCategoryDelete" disabled>删除所选分类</button>
+        </div>
+      </form>
+    </dialog>
+    <dialog class="modal" id="settings" aria-labelledby="settingsTitle">
+      <form id="settingsForm">
+        <h2 id="settingsTitle">影集设置</h2>
+        <label class="formrow">影集名称<input id="albumTitle" required maxlength="12"></label>
+        <label class="formrow">作者 / 团队署名<input id="albumAuthor" maxlength="80" placeholder="填写你们的署名"></label>
+        <label class="formrow">分类标签（一行一个）<textarea id="albumTags" rows="7"></textarea></label>
+        <p>标签名称请勿含英文逗号。删除标签时，会同步移除照片上的该标签；照片本身保留。未标注的照片显示为「未分类」。</p>
+        <div class="modal-actions">
+          <button class="outline" type="button" id="cancelSettings">取消</button>
+          <button class="primary" type="submit">保存设置</button>
+        </div>
+      </form>
+    </dialog>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <noscript><p class="error">请启用浏览器 JavaScript 以显示照片及使用分类功能。</p></noscript>
+    <script id="album-data" type="application/json">
+      {
+        "version": 1,
+        "title": "印象随园",
+        "subtitle": "把时光，留在随园。",
+        "author": "",
+        "cover": "aerial-suiyuan",
+        "tags": [
+          "德风园",
+          "100号楼",
+          "大草坪",
+          "长廊",
+          "花木绿植",
+          "校园生活"
+        ],
+        "photos": [
+          {
+            "id": "p001",
+            "src": "001-view.jpg",
+            "thumb": "001-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_722_30.jpg",
+            "filename": "微信图片_20261114143032_722_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p002",
+            "src": "002-view.jpg",
+            "thumb": "002-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_723_30.jpg",
+            "filename": "微信图片_20261114143032_723_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p003",
+            "src": "003-view.jpg",
+            "thumb": "003-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_724_30.jpg",
+            "filename": "微信图片_20261114143032_724_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p004",
+            "src": "004-view.jpg",
+            "thumb": "004-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_725_30.jpg",
+            "filename": "微信图片_20261114143032_725_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1869,
+            "height": 1667
+          },
+          {
+            "id": "p005",
+            "src": "005-view.jpg",
+            "thumb": "005-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_726_30.jpg",
+            "filename": "微信图片_20261114143032_726_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p006",
+            "src": "006-view.jpg",
+            "thumb": "006-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_727_30.jpg",
+            "filename": "微信图片_20261114143032_727_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p007",
+            "src": "007-view.jpg",
+            "thumb": "007-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_728_30.jpg",
+            "filename": "微信图片_20261114143032_728_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4284,
+            "height": 5712
+          },
+          {
+            "id": "p008",
+            "src": "008-view.jpg",
+            "thumb": "008-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_729_30.jpg",
+            "filename": "微信图片_20261114143032_729_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p009",
+            "src": "009-view.jpg",
+            "thumb": "009-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_730_30.jpg",
+            "filename": "微信图片_20261114143032_730_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p010",
+            "src": "010-view.jpg",
+            "thumb": "010-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_731_30.jpg",
+            "filename": "微信图片_20261114143032_731_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p011",
+            "src": "011-view.jpg",
+            "thumb": "011-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_732_30.jpg",
+            "filename": "微信图片_20261114143032_732_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p012",
+            "src": "012-view.jpg",
+            "thumb": "012-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_733_30.jpg",
+            "filename": "微信图片_20261114143032_733_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p013",
+            "src": "013-view.jpg",
+            "thumb": "013-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_734_30.jpg",
+            "filename": "微信图片_20261114143032_734_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p014",
+            "src": "014-view.jpg",
+            "thumb": "014-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_735_30.jpg",
+            "filename": "微信图片_20261114143032_735_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p015",
+            "src": "015-view.jpg",
+            "thumb": "015-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_736_30.jpg",
+            "filename": "微信图片_20261114143032_736_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p016",
+            "src": "016-view.jpg",
+            "thumb": "016-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_737_30.jpg",
+            "filename": "微信图片_20261114143032_737_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p017",
+            "src": "017-view.jpg",
+            "thumb": "017-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_738_30.jpg",
+            "filename": "微信图片_20261114143032_738_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p018",
+            "src": "018-view.jpg",
+            "thumb": "018-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_739_30.jpg",
+            "filename": "微信图片_20261114143032_739_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4284,
+            "height": 5712
+          },
+          {
+            "id": "p019",
+            "src": "019-view.jpg",
+            "thumb": "019-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_740_30.jpg",
+            "filename": "微信图片_20261114143032_740_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p020",
+            "src": "020-view.jpg",
+            "thumb": "020-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_741_30.jpg",
+            "filename": "微信图片_20261114143032_741_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p021",
+            "src": "021-view.jpg",
+            "thumb": "021-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_742_30.jpg",
+            "filename": "微信图片_20261114143032_742_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p022",
+            "src": "022-view.jpg",
+            "thumb": "022-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_743_30.jpg",
+            "filename": "微信图片_20261114143032_743_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p023",
+            "src": "023-view.jpg",
+            "thumb": "023-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_744_30.jpg",
+            "filename": "微信图片_20261114143032_744_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p024",
+            "src": "024-view.jpg",
+            "thumb": "024-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_745_30.jpg",
+            "filename": "微信图片_20261114143032_745_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p025",
+            "src": "025-view.jpg",
+            "thumb": "025-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_746_30.jpg",
+            "filename": "微信图片_20261114143032_746_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p026",
+            "src": "026-view.jpg",
+            "thumb": "026-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_747_30.jpg",
+            "filename": "微信图片_20261114143032_747_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p027",
+            "src": "027-view.jpg",
+            "thumb": "027-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_748_30.jpg",
+            "filename": "微信图片_20261114143032_748_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p028",
+            "src": "028-view.jpg",
+            "thumb": "028-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_749_30.jpg",
+            "filename": "微信图片_20261114143032_749_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p029",
+            "src": "029-view.jpg",
+            "thumb": "029-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_750_30.jpg",
+            "filename": "微信图片_20261114143032_750_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p030",
+            "src": "030-view.jpg",
+            "thumb": "030-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_751_30.jpg",
+            "filename": "微信图片_20261114143032_751_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p031",
+            "src": "031-view.jpg",
+            "thumb": "031-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_752_30.jpg",
+            "filename": "微信图片_20261114143032_752_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p032",
+            "src": "032-view.jpg",
+            "thumb": "032-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_753_30.jpg",
+            "filename": "微信图片_20261114143032_753_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p033",
+            "src": "033-view.jpg",
+            "thumb": "033-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_754_30.jpg",
+            "filename": "微信图片_20261114143032_754_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p034",
+            "src": "034-view.jpg",
+            "thumb": "034-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_755_30.jpg",
+            "filename": "微信图片_20261114143032_755_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1920,
+            "height": 1080
+          },
+          {
+            "id": "p035",
+            "src": "035-view.jpg",
+            "thumb": "035-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_756_30.jpg",
+            "filename": "微信图片_20261114143032_756_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p036",
+            "src": "036-view.jpg",
+            "thumb": "036-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_757_30.jpg",
+            "filename": "微信图片_20261114143032_757_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p037",
+            "src": "037-view.jpg",
+            "thumb": "037-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_758_30.jpg",
+            "filename": "微信图片_20261114143032_758_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p038",
+            "src": "038-view.jpg",
+            "thumb": "038-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_759_30.jpg",
+            "filename": "微信图片_20261114143032_759_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p039",
+            "src": "039-view.jpg",
+            "thumb": "039-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_760_30.jpg",
+            "filename": "微信图片_20261114143032_760_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p040",
+            "src": "040-view.jpg",
+            "thumb": "040-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_761_30.jpg",
+            "filename": "微信图片_20261114143032_761_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p041",
+            "src": "041-view.jpg",
+            "thumb": "041-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_762_30.jpg",
+            "filename": "微信图片_20261114143032_762_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p042",
+            "src": "042-view.jpg",
+            "thumb": "042-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_763_30.jpg",
+            "filename": "微信图片_20261114143032_763_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p043",
+            "src": "043-view.jpg",
+            "thumb": "043-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_764_30.jpg",
+            "filename": "微信图片_20261114143032_764_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5041,
+            "height": 3781
+          },
+          {
+            "id": "p044",
+            "src": "044-view.jpg",
+            "thumb": "044-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_765_30.jpg",
+            "filename": "微信图片_20261114143032_765_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p045",
+            "src": "045-view.jpg",
+            "thumb": "045-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_766_30.jpg",
+            "filename": "微信图片_20261114143032_766_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p046",
+            "src": "046-view.jpg",
+            "thumb": "046-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_767_30.jpg",
+            "filename": "微信图片_20261114143032_767_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p047",
+            "src": "047-view.jpg",
+            "thumb": "047-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_768_30.jpg",
+            "filename": "微信图片_20261114143032_768_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p048",
+            "src": "048-view.jpg",
+            "thumb": "048-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_769_30.jpg",
+            "filename": "微信图片_20261114143032_769_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p049",
+            "src": "049-view.jpg",
+            "thumb": "049-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_770_30.jpg",
+            "filename": "微信图片_20261114143032_770_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p050",
+            "src": "050-view.jpg",
+            "thumb": "050-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_771_30.jpg",
+            "filename": "微信图片_20261114143032_771_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p051",
+            "src": "051-view.jpg",
+            "thumb": "051-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_772_30.jpg",
+            "filename": "微信图片_20261114143032_772_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p052",
+            "src": "052-view.jpg",
+            "thumb": "052-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_773_30.jpg",
+            "filename": "微信图片_20261114143032_773_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p053",
+            "src": "053-view.jpg",
+            "thumb": "053-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_774_30.jpg",
+            "filename": "微信图片_20261114143032_774_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p054",
+            "src": "054-view.jpg",
+            "thumb": "054-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_775_30.jpg",
+            "filename": "微信图片_20261114143032_775_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p055",
+            "src": "055-view.jpg",
+            "thumb": "055-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_776_30.jpg",
+            "filename": "微信图片_20261114143032_776_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p056",
+            "src": "056-view.jpg",
+            "thumb": "056-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_777_30.jpg",
+            "filename": "微信图片_20261114143032_777_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p057",
+            "src": "057-view.jpg",
+            "thumb": "057-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_778_30.jpg",
+            "filename": "微信图片_20261114143032_778_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p058",
+            "src": "058-view.jpg",
+            "thumb": "058-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_779_30.jpg",
+            "filename": "微信图片_20261114143032_779_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4992,
+            "height": 3743
+          },
+          {
+            "id": "p059",
+            "src": "059-view.jpg",
+            "thumb": "059-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_780_30.jpg",
+            "filename": "微信图片_20261114143032_780_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p060",
+            "src": "060-view.jpg",
+            "thumb": "060-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_781_30.jpg",
+            "filename": "微信图片_20261114143032_781_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p061",
+            "src": "061-view.jpg",
+            "thumb": "061-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_782_30.jpg",
+            "filename": "微信图片_20261114143032_782_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p062",
+            "src": "062-view.jpg",
+            "thumb": "062-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_783_30.jpg",
+            "filename": "微信图片_20261114143032_783_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p063",
+            "src": "063-view.jpg",
+            "thumb": "063-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_784_30.jpg",
+            "filename": "微信图片_20261114143032_784_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p064",
+            "src": "064-view.jpg",
+            "thumb": "064-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_785_30.jpg",
+            "filename": "微信图片_20261114143032_785_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p065",
+            "src": "065-view.jpg",
+            "thumb": "065-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_786_30.jpg",
+            "filename": "微信图片_20261114143032_786_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p066",
+            "src": "066-view.jpg",
+            "thumb": "066-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_787_30.jpg",
+            "filename": "微信图片_20261114143032_787_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p067",
+            "src": "067-view.jpg",
+            "thumb": "067-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_788_30.jpg",
+            "filename": "微信图片_20261114143032_788_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p068",
+            "src": "068-view.jpg",
+            "thumb": "068-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_789_30.jpg",
+            "filename": "微信图片_20261114143032_789_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 2620,
+            "height": 4658
+          },
+          {
+            "id": "p069",
+            "src": "069-view.jpg",
+            "thumb": "069-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_790_30.jpg",
+            "filename": "微信图片_20261114143032_790_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p070",
+            "src": "070-view.jpg",
+            "thumb": "070-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_791_30.jpg",
+            "filename": "微信图片_20261114143032_791_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p071",
+            "src": "071-view.jpg",
+            "thumb": "071-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_792_30.jpg",
+            "filename": "微信图片_20261114143032_792_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p072",
+            "src": "072-view.jpg",
+            "thumb": "072-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_793_30.jpg",
+            "filename": "微信图片_20261114143032_793_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p073",
+            "src": "073-view.jpg",
+            "thumb": "073-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_794_30.jpg",
+            "filename": "微信图片_20261114143032_794_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4032,
+            "height": 3024
+          },
+          {
+            "id": "p074",
+            "src": "074-view.jpg",
+            "thumb": "074-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_795_30.jpg",
+            "filename": "微信图片_20261114143032_795_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p075",
+            "src": "075-view.jpg",
+            "thumb": "075-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_796_30.jpg",
+            "filename": "微信图片_20261114143032_796_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p076",
+            "src": "076-view.jpg",
+            "thumb": "076-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_797_30.jpg",
+            "filename": "微信图片_20261114143032_797_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p077",
+            "src": "077-view.jpg",
+            "thumb": "077-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_798_30.jpg",
+            "filename": "微信图片_20261114143032_798_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7077,
+            "height": 3980
+          },
+          {
+            "id": "p078",
+            "src": "078-view.jpg",
+            "thumb": "078-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_799_30.jpg",
+            "filename": "微信图片_20261114143032_799_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7337,
+            "height": 3538
+          },
+          {
+            "id": "p079",
+            "src": "079-view.jpg",
+            "thumb": "079-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_800_30.jpg",
+            "filename": "微信图片_20261114143032_800_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p080",
+            "src": "080-view.jpg",
+            "thumb": "080-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_801_30.jpg",
+            "filename": "微信图片_20261114143032_801_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p081",
+            "src": "081-view.jpg",
+            "thumb": "081-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_802_30.jpg",
+            "filename": "微信图片_20261114143032_802_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p082",
+            "src": "082-view.jpg",
+            "thumb": "082-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_803_30.jpg",
+            "filename": "微信图片_20261114143032_803_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p083",
+            "src": "083-view.jpg",
+            "thumb": "083-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_804_30.jpg",
+            "filename": "微信图片_20261114143032_804_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p084",
+            "src": "084-view.jpg",
+            "thumb": "084-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_805_30.jpg",
+            "filename": "微信图片_20261114143032_805_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p085",
+            "src": "085-view.jpg",
+            "thumb": "085-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_806_30.jpg",
+            "filename": "微信图片_20261114143032_806_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 5712,
+            "height": 4284
+          },
+          {
+            "id": "p086",
+            "src": "086-view.jpg",
+            "thumb": "086-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_807_30.jpg",
+            "filename": "微信图片_20261114143032_807_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p087",
+            "src": "087-view.jpg",
+            "thumb": "087-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_808_30.jpg",
+            "filename": "微信图片_20261114143032_808_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p088",
+            "src": "088-view.jpg",
+            "thumb": "088-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_809_30.jpg",
+            "filename": "微信图片_20261114143032_809_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p089",
+            "src": "089-view.jpg",
+            "thumb": "089-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_810_30.jpg",
+            "filename": "微信图片_20261114143032_810_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p090",
+            "src": "090-view.jpg",
+            "thumb": "090-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_811_30.jpg",
+            "filename": "微信图片_20261114143032_811_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p091",
+            "src": "091-view.jpg",
+            "thumb": "091-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_812_30.jpg",
+            "filename": "微信图片_20261114143032_812_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p092",
+            "src": "092-view.jpg",
+            "thumb": "092-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_813_30.jpg",
+            "filename": "微信图片_20261114143032_813_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p093",
+            "src": "093-view.jpg",
+            "thumb": "093-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_814_30.jpg",
+            "filename": "微信图片_20261114143032_814_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p094",
+            "src": "094-view.jpg",
+            "thumb": "094-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_815_30.jpg",
+            "filename": "微信图片_20261114143032_815_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p095",
+            "src": "095-view.jpg",
+            "thumb": "095-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_816_30.jpg",
+            "filename": "微信图片_20261114143032_816_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p096",
+            "src": "096-view.jpg",
+            "thumb": "096-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_817_30.jpg",
+            "filename": "微信图片_20261114143032_817_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p097",
+            "src": "097-view.jpg",
+            "thumb": "097-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_818_30.jpg",
+            "filename": "微信图片_20261114143032_818_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p098",
+            "src": "098-view.jpg",
+            "thumb": "098-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_819_30.jpg",
+            "filename": "微信图片_20261114143032_819_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p099",
+            "src": "099-view.jpg",
+            "thumb": "099-thumb.jpg",
+            "original": "照片/微信图片_20261114143032_820_30.jpg",
+            "filename": "微信图片_20261114143032_820_30.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 7680,
+            "height": 4320
+          },
+          {
+            "id": "p100",
+            "src": "100-view.jpg",
+            "thumb": "100-thumb.jpg",
+            "original": "100-view.jpg",
+            "filename": "100-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p101",
+            "src": "101-view.jpg",
+            "thumb": "101-thumb.jpg",
+            "original": "101-view.jpg",
+            "filename": "101-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p102",
+            "src": "102-view.jpg",
+            "thumb": "102-thumb.jpg",
+            "original": "102-view.jpg",
+            "filename": "102-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p103",
+            "src": "103-view.jpg",
+            "thumb": "103-thumb.jpg",
+            "original": "103-view.jpg",
+            "filename": "103-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p104",
+            "src": "104-view.jpg",
+            "thumb": "104-thumb.jpg",
+            "original": "104-view.jpg",
+            "filename": "104-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p105",
+            "src": "105-view.jpg",
+            "thumb": "105-thumb.jpg",
+            "original": "105-view.jpg",
+            "filename": "105-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p106",
+            "src": "106-view.jpg",
+            "thumb": "106-thumb.jpg",
+            "original": "106-view.jpg",
+            "filename": "106-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p107",
+            "src": "107-view.jpg",
+            "thumb": "107-thumb.jpg",
+            "original": "107-view.jpg",
+            "filename": "107-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p108",
+            "src": "108-view.jpg",
+            "thumb": "108-thumb.jpg",
+            "original": "108-view.jpg",
+            "filename": "108-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 4284,
+            "height": 5712
+          },
+          {
+            "id": "p109",
+            "src": "109-view.jpg",
+            "thumb": "109-thumb.jpg",
+            "original": "109-view.jpg",
+            "filename": "109-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p110",
+            "src": "110-view.jpg",
+            "thumb": "110-thumb.jpg",
+            "original": "110-view.jpg",
+            "filename": "110-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p111",
+            "src": "111-view.jpg",
+            "thumb": "111-thumb.jpg",
+            "original": "111-view.jpg",
+            "filename": "111-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p112",
+            "src": "112-view.jpg",
+            "thumb": "112-thumb.jpg",
+            "original": "112-view.jpg",
+            "filename": "112-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p113",
+            "src": "113-view.jpg",
+            "thumb": "113-thumb.jpg",
+            "original": "113-view.jpg",
+            "filename": "113-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p114",
+            "src": "114-view.jpg",
+            "thumb": "114-thumb.jpg",
+            "original": "114-view.jpg",
+            "filename": "114-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p115",
+            "src": "115-view.jpg",
+            "thumb": "115-thumb.jpg",
+            "original": "115-view.jpg",
+            "filename": "115-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1278,
+            "height": 1278
+          },
+          {
+            "id": "p116",
+            "src": "116-view.jpg",
+            "thumb": "116-thumb.jpg",
+            "original": "116-view.jpg",
+            "filename": "116-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1279,
+            "height": 1706
+          },
+          {
+            "id": "p117",
+            "src": "117-view.jpg",
+            "thumb": "117-thumb.jpg",
+            "original": "117-view.jpg",
+            "filename": "117-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p118",
+            "src": "118-view.jpg",
+            "thumb": "118-thumb.jpg",
+            "original": "118-view.jpg",
+            "filename": "118-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p119",
+            "src": "119-view.jpg",
+            "thumb": "119-thumb.jpg",
+            "original": "119-view.jpg",
+            "filename": "119-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p120",
+            "src": "120-view.jpg",
+            "thumb": "120-thumb.jpg",
+            "original": "120-view.jpg",
+            "filename": "120-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p121",
+            "src": "121-view.jpg",
+            "thumb": "121-thumb.jpg",
+            "original": "121-view.jpg",
+            "filename": "121-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1702,
+            "height": 1276
+          },
+          {
+            "id": "p122",
+            "src": "122-view.jpg",
+            "thumb": "122-thumb.jpg",
+            "original": "122-view.jpg",
+            "filename": "122-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1702,
+            "height": 1276
+          },
+          {
+            "id": "p123",
+            "src": "123-view.jpg",
+            "thumb": "123-thumb.jpg",
+            "original": "123-view.jpg",
+            "filename": "123-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1280
+          },
+          {
+            "id": "p124",
+            "src": "124-view.jpg",
+            "thumb": "124-thumb.jpg",
+            "original": "124-view.jpg",
+            "filename": "124-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p125",
+            "src": "125-view.jpg",
+            "thumb": "125-thumb.jpg",
+            "original": "125-view.jpg",
+            "filename": "125-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1707,
+            "height": 1280
+          },
+          {
+            "id": "p126",
+            "src": "126-view.jpg",
+            "thumb": "126-thumb.jpg",
+            "original": "126-view.jpg",
+            "filename": "126-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p127",
+            "src": "127-view.jpg",
+            "thumb": "127-thumb.jpg",
+            "original": "127-view.jpg",
+            "filename": "127-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p128",
+            "src": "128-view.jpg",
+            "thumb": "128-thumb.jpg",
+            "original": "128-view.jpg",
+            "filename": "128-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1278,
+            "height": 1278
+          },
+          {
+            "id": "p129",
+            "src": "129-view.jpg",
+            "thumb": "129-thumb.jpg",
+            "original": "129-view.jpg",
+            "filename": "129-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 3024,
+            "height": 4032
+          },
+          {
+            "id": "p130",
+            "src": "130-view.jpg",
+            "thumb": "130-thumb.jpg",
+            "original": "130-view.jpg",
+            "filename": "130-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1707,
+            "height": 1280
+          },
+          {
+            "id": "p131",
+            "src": "131-view.jpg",
+            "thumb": "131-thumb.jpg",
+            "original": "131-view.jpg",
+            "filename": "131-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p132",
+            "src": "132-view.jpg",
+            "thumb": "132-thumb.jpg",
+            "original": "132-view.jpg",
+            "filename": "132-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1278,
+            "height": 1278
+          },
+          {
+            "id": "p133",
+            "src": "133-view.jpg",
+            "thumb": "133-thumb.jpg",
+            "original": "133-view.jpg",
+            "filename": "133-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p134",
+            "src": "134-view.jpg",
+            "thumb": "134-thumb.jpg",
+            "original": "134-view.jpg",
+            "filename": "134-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p135",
+            "src": "135-view.jpg",
+            "thumb": "135-thumb.jpg",
+            "original": "135-view.jpg",
+            "filename": "135-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p136",
+            "src": "136-view.jpg",
+            "thumb": "136-thumb.jpg",
+            "original": "136-view.jpg",
+            "filename": "136-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p137",
+            "src": "137-view.jpg",
+            "thumb": "137-thumb.jpg",
+            "original": "137-view.jpg",
+            "filename": "137-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1279,
+            "height": 1706
+          },
+          {
+            "id": "p138",
+            "src": "138-view.jpg",
+            "thumb": "138-thumb.jpg",
+            "original": "138-view.jpg",
+            "filename": "138-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1279,
+            "height": 1706
+          },
+          {
+            "id": "p139",
+            "src": "139-view.jpg",
+            "thumb": "139-thumb.jpg",
+            "original": "139-view.jpg",
+            "filename": "139-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1280,
+            "height": 1707
+          },
+          {
+            "id": "p140",
+            "src": "140-view.jpg",
+            "thumb": "140-thumb.jpg",
+            "original": "140-view.jpg",
+            "filename": "140-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1282,
+            "height": 1282
+          },
+          {
+            "id": "p141",
+            "src": "141-view.jpg",
+            "thumb": "141-thumb.jpg",
+            "original": "141-view.jpg",
+            "filename": "141-view.jpg",
+            "title": "",
+            "caption": "",
+            "tags": [],
+            "width": 1282,
+            "height": 1282
+          }
+        ],
+        "coverImage": "航拍随园.png"
+      }
+    </script>
+    <script>
+      (() => {
+        'use strict';
+        const $ = id => document.getElementById(id),
+          initial = JSON.parse($('album-data').textContent);
+        // 修改照片清单时，保持 id 唯一；src / thumb 为相对本 HTML 的图片路径。
+
+        // 状态与本地保存
+        const storageKey = 'suiyuan-album-v1:' + location.pathname;
+        let state = initial,
+          filter = '全部',
+          query = '',
+          page = 1,
+          editing = false,
+          selected = new Set(),
+          editingId = null,
+          viewerList = [],
+          viewerIndex = 0,
+          timer = null,
+          toastTimer;
+        let draftTags = [];
+        try {
+          const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+          if (saved && saved.version === 1 && Array.isArray(saved.photos) && saved.photos.length &&
+            Array.isArray(saved.tags)) state = {
+            ...initial,
+            ...saved,
+            photos: [
+              ...saved.photos,
+              ...initial.photos.filter(photo =>
+                !saved.photos.some(savedPhoto => savedPhoto.id === photo.id))
+            ],
+            coverImage: saved.coverImage || initial.coverImage
+          };
+        } catch (e) {}
+        const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        } [c]));
+        const title = (p) => p.title || '';
+
+        // 提示与基础显示
+        function toast(s) {
+          $('toast').textContent = s;
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(() => $('toast').textContent = '', 4500);
+        }
+
+        function save() {
+          try {
+            localStorage.setItem(storageKey, JSON.stringify(state));
+          } catch (e) {
+            toast('浏览器未能保存，请点击「导出影集」保留修改。');
+          }
+        }
+
+        function cover() {
+          const p = state.photos.find(p => p.id === state.cover) || state.photos[0];
+          $('cover').src = state.coverImage || (p && p.src) || '';
+          document.querySelectorAll('[data-album-title]').forEach(el => el.textContent = state.title);
+          $('credit').textContent = state.author || '';
+          document.title = state.title + ' · 校园微影集';
+        }
+
+        // 照片筛选与列表渲染
+        function matches() {
+          return state.photos.filter(p => (filter === '全部' || (filter === '未分类' ? p.tags.length === 0 :
+            p.tags.includes(filter))) && (!query || [p.title, p.caption, p.filename, ...p.tags]
+            .join(' ').toLowerCase().includes(query)));
+        }
+
+        function filterButtons() {
+          const names = ['全部', ...state.tags, '未分类'];
+          $('filters').innerHTML = names.map(t => {
+            const count = t === '全部' ? state.photos.length : t === '未分类' ? state.photos.filter(p =>
+              !p.tags.length).length : state.photos.filter(p => p.tags.includes(t)).length;
+            return '<button class="chip ' + (filter === t ? 'active' : '') + '" data-filter="' +
+              esc(t) + '" aria-pressed="' + (filter === t) + '">' + esc(t) + '<span>' + count +
+              '</span></button>';
+          }).join('');
+        }
+        const PAGE_SIZE = 18;
+
+        function render() {
+          $('addCategory').hidden = !editing;
+          $('deleteCategory').hidden = !editing;
+          $('deleteCategory').disabled = !state.tags.length;
+          if (!['全部', '未分类', ...state.tags].includes(filter)) filter = '全部';
+          filterButtons();
+          const photos = matches(),
+            pages = Math.max(1, Math.ceil(photos.length / PAGE_SIZE));
+          page = Math.min(page, pages);
+          const visible = photos.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
+          $('status').textContent = (filter === '全部' ? '全部影像' : filter) + ' / ' + photos.length + ' 张';
+          $('gallery').classList.toggle('editing', editing);
+          $('gallery').innerHTML = visible.length ? visible.map(p => '<figure data-id="' + p.id +
+              '"><label class="select-photo"><input type="checkbox" data-select="' + p.id + '" ' + (
+                selected.has(p.id) ? 'checked' : '') +
+              '>选择</label><button class="photo-btn" data-view="' + p.id + '" aria-label="查看 ' + esc(
+                title(p) || '校园照片') + '"><img src="' + esc(p.thumb) +
+              '" loading="lazy" decoding="async" alt="' + esc(title(p) || '校园照片') +
+              '"></button><figcaption>' + (p.tags.length || editing ?
+                '<div class="photo-kicker"><span class="tagtext">' + esc(p.tags.length ? p.tags.join(
+                  ' · ') : '未分类') + '</span></div>' : '') + (p.title ? '<h3 class="photo-title">' + esc(
+                title(p)) + '</h3>' : '') + (p.caption ? '<p class="photo-caption">' + esc(p.caption) +
+                '</p>' : '') + (editing ? '<div class="filename" title="' + esc(p.filename) + '">' +
+                esc(p.filename) + '</div><button class="edit-photo" data-edit="' + p.id +
+                '">编辑标题与标签 ↗</button>' : '') + '</figcaption></figure>').join('') :
+            '<div class="empty"><strong>这一页，留给下一段记忆。</strong>' + (query ? '没有找到相关照片，请试试其他关键词。' :
+              '这个标签下还没有照片。点击「整理照片」，为照片添加此标签。') + '</div>';
+          $('pageInfo').textContent = page + ' / ' + pages;
+          $('prevPage').disabled = page === 1;
+          $('nextPage').disabled = page === pages;
+          $('slideshow').disabled = !photos.length;
+          updateSelection();
+        }
+
+        function updateSelection() {
+          $('selectedCount').textContent = '已选 ' + selected.size + ' 张';
+          $('batchTags').disabled = !selected.size;
+        }
+
+        // 列表交互与整理模式
+        function toggleEdit() {
+          editing = !editing;
+          $('editToggle').textContent = editing ? '完成整理' : '整理照片';
+          $('editToggle').setAttribute('aria-pressed', String(editing));
+          $('albumSettings').hidden = !editing;
+          $('batchbar').hidden = !editing;
+          if (!editing) selected.clear();
+          render();
+          if (editing) $('album').scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+        $('editToggle').onclick = toggleEdit;
+        $('filters').onclick = e => {
+          const b = e.target.closest('[data-filter]');
+          if (!b) return;
+          filter = b.dataset.filter;
+          page = 1;
+          render();
+        };
+        $('search').oninput = e => {
+          query = e.target.value.trim().toLowerCase();
+          page = 1;
+          render();
+        };
+        $('gallery').onclick = e => {
+          const v = e.target.closest('[data-view]'),
+            ed = e.target.closest('[data-edit]');
+          if (v) openViewer(v.dataset.view);
+          if (ed) openEditor(ed.dataset.edit);
+        };
+        $('gallery').onchange = e => {
+          if (!e.target.dataset.select) return;
+          const id = e.target.dataset.select;
+          e.target.checked ? selected.add(id) : selected.delete(id);
+          updateSelection();
+        };
+        $('selectPage').onclick = () => {
+          matches().slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).forEach(p => selected.add(p.id));
+          render();
+        };
+        $('clearSelection').onclick = () => {
+          selected.clear();
+          render();
+        };
+
+        function changePage(d) {
+          page += d;
+          render();
+          $('album').scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+        $('prevPage').onclick = () => changePage(-1);
+        $('nextPage').onclick = () => changePage(1);
+
+        // 编辑模式：直接从分类栏新增分类
+        $('addCategory').onclick = () => {
+          if (!editing) return;
+          $('categoryForm').reset();
+          $('categoryError').textContent = '';
+          $('categoryEditor').showModal();
+        };
+
+        $('categoryName').oninput = () => {
+          $('categoryError').textContent = '';
+        };
+
+        $('categoryForm').onsubmit = e => {
+          e.preventDefault();
+          if (!editing) return;
+          const name = $('categoryName').value.trim();
+          let error = '';
+
+          if (!name) {
+            error = '请输入分类名称。';
+          } else if (name.length > 30) {
+            error = '分类名称不能超过 30 字。';
+          } else if (['全部', '未分类'].includes(name) || name.includes(',')) {
+            error = '请勿使用「全部」「未分类」或英文逗号。';
+          } else if (state.tags.includes(name)) {
+            error = '这个分类已存在，请换一个名称。';
+          }
+
+          if (error) {
+            $('categoryError').textContent = error;
+            $('categoryName').focus();
+            return;
+          }
+
+          state.tags.push(name);
+          save();
+          render();
+          $('categoryEditor').close();
+          toast('已添加分类「' + name + '」。');
+        };
+
+        $('cancelCategory').onclick = () => $('categoryEditor').close();
+
+        // 删除分类：照片、标题与其他标签保持不变
+        function updateCategoryDeleteImpact() {
+          const names = checked($('categoryDeletePicker'));
+          const affected = state.photos.filter(photo =>
+            photo.tags.some(tag => names.includes(tag))).length;
+          $('confirmCategoryDelete').disabled = !names.length;
+          $('categoryDeleteImpact').textContent = names.length ?
+            '将删除 ' + names.length + ' 个分类，移除 ' + affected + ' 张照片上的对应标签。照片本身会保留。' :
+            '请选择要删除的分类。';
+        }
+
+        $('deleteCategory').onclick = () => {
+          if (!editing || !state.tags.length) return;
+          picker($('categoryDeletePicker'), state.tags, []);
+          updateCategoryDeleteImpact();
+          $('categoryDeleteEditor').showModal();
+        };
+
+        $('categoryDeletePicker').onchange = updateCategoryDeleteImpact;
+
+        $('categoryDeleteForm').onsubmit = e => {
+          e.preventDefault();
+          if (!editing) return;
+          const names = new Set(checked($('categoryDeletePicker')));
+          if (!names.size) return;
+
+          state.tags = state.tags.filter(tag => !names.has(tag));
+          state.photos.forEach(photo => {
+            photo.tags = photo.tags.filter(tag => !names.has(tag));
+          });
+          save();
+          render();
+          $('categoryDeleteEditor').close();
+          toast('已删除 ' + names.size + ' 个分类，照片已保留。');
+        };
+
+        $('cancelCategoryDelete').onclick = () => $('categoryDeleteEditor').close();
+
+        // 单张照片编辑
+        function picker(el, tags, checked) {
+          el.innerHTML = tags.map(t => '<label><input type="checkbox" value="' + esc(t) + '" ' + (
+            checked.includes(t) ? 'checked' : '') + '>' + esc(t) + '</label>').join('');
+        }
+
+        function checked(el) {
+          return [...el.querySelectorAll('input:checked')].map(x => x.value);
+        }
+
+        function openEditor(id) {
+          editingId = id;
+          const p = state.photos.find(x => x.id === id);
+          draftTags = [...state.tags];
+          $('editorFilename').textContent = p.filename;
+          $('editorImage').src = p.thumb;
+          $('photoTitle').value = p.title;
+          $('photoCaption').value = p.caption;
+          $('setCover').checked = state.cover === id;
+          $('newTag').value = '';
+          picker($('photoTags'), draftTags, p.tags);
+          $('editor').showModal();
+        }
+        $('addTag').onclick = () => {
+          const tag = $('newTag').value.trim();
+          if (!tag) return;
+          if (['全部', '未分类'].includes(tag) || tag.includes(',')) {
+            toast('请换一个标签名称，且不要使用英文逗号。');
+            return;
+          }
+          const existing = checked($('photoTags'));
+          if (!draftTags.includes(tag)) draftTags.push(tag);
+          picker($('photoTags'), draftTags, [...existing, tag]);
+          $('newTag').value = '';
+        };
+        $('newTag').onkeydown = e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+            $('addTag').click();
+          }
+        };
+        $('photoForm').onsubmit = e => {
+          e.preventDefault();
+          const p = state.photos.find(x => x.id === editingId);
+          p.title = $('photoTitle').value.trim();
+          p.caption = $('photoCaption').value.trim();
+          state.tags = draftTags;
+          p.tags = checked($('photoTags'));
+          if ($('setCover').checked) {
+            state.cover = p.id;
+            state.coverImage = p.src;
+          }
+          save();
+          cover();
+          render();
+          $('editor').close();
+          toast('已保存这一帧。');
+        };
+        $('cancelEditor').onclick = () => $('editor').close();
+
+        // 批量分类
+        $('batchTags').onclick = () => {
+          picker($('batchPicker'), state.tags, []);
+          $('replaceTags').checked = false;
+          $('batchTitle').textContent = '为 ' + selected.size + ' 张照片设置标签';
+          $('batchEditor').showModal();
+        };
+        $('batchForm').onsubmit = e => {
+          e.preventDefault();
+          const tags = checked($('batchPicker')),
+            replace = $('replaceTags').checked;
+          if (!tags.length && !replace) {
+            toast('请先勾选标签；清空标签时请勾选「替换」。');
+            return;
+          }
+          state.photos.filter(p => selected.has(p.id)).forEach(p => p.tags = replace ? [...tags] : [
+            ...new Set([...p.tags, ...tags])
+          ]);
+          save();
+          $('batchEditor').close();
+          selected.clear();
+          render();
+          toast('已完成批量分类。');
+        };
+        $('cancelBatch').onclick = () => $('batchEditor').close();
+
+        // 影集设置
+        $('albumSettings').onclick = () => {
+          $('albumTitle').value = state.title;
+          $('albumAuthor').value = state.author;
+          $('albumTags').value = state.tags.join('\n');
+          $('settings').showModal();
+        };
+        $('settingsForm').onsubmit = e => {
+          e.preventDefault();
+          const tags = [...new Set($('albumTags').value.split('\n').map(t => t.trim()).filter(
+            Boolean))];
+          if (tags.some(t => ['全部', '未分类'].includes(t) || t.includes(',') || t.length > 30)) {
+            toast('标签请勿使用「全部」「未分类」、英文逗号，且不超过 30 字。');
+            return;
+          }
+          state.title = $('albumTitle').value.trim() || '印象随园';
+          state.author = $('albumAuthor').value.trim();
+          state.tags = tags;
+          state.photos.forEach(p => p.tags = p.tags.filter(t => tags.includes(t)));
+          save();
+          cover();
+          render();
+          $('settings').close();
+          toast('影集设置已保存。');
+        };
+        $('cancelSettings').onclick = () => $('settings').close();
+
+        // 大图浏览与自动播放
+        function showPhoto() {
+          const p = viewerList[viewerIndex];
+          $('viewerImage').src = p.src;
+          $('viewerImage').alt = title(p) || '校园照片';
+          $('viewerTitle').textContent = title(p);
+          $('viewerCaption').textContent = [p.tags.join(' · '), p.caption].filter(Boolean).join('\n');
+          $('viewerPosition').textContent = String(viewerIndex + 1).padStart(2, '0') + ' / ' +
+            viewerList.length;
+          $('prevPhoto').disabled = viewerList.length < 2;
+          $('nextPhoto').disabled = viewerList.length < 2;
+          $('playPause').disabled = viewerList.length < 2;
+        }
+
+        function openViewer(id, auto = false) {
+          viewerList = matches();
+          if (!viewerList.length) return;
+          viewerIndex = Math.max(0, viewerList.findIndex(p => p.id === id));
+          showPhoto();
+          $('viewer').showModal();
+          document.body.classList.add('no-scroll');
+          if (auto && viewerList.length > 1) play();
+        }
+
+        function step(d) {
+          viewerIndex = (viewerIndex + d + viewerList.length) % viewerList.length;
+          showPhoto();
+        }
+
+        function stop() {
+          clearInterval(timer);
+          timer = null;
+          $('playPause').textContent = '▷ 自动播放';
+        }
+
+        function play() {
+          stop();
+          timer = setInterval(() => step(1), 4500);
+          $('playPause').textContent = 'Ⅱ 暂停播放';
+        }
+        $('playPause').onclick = () => timer ? stop() : play();
+        $('prevPhoto').onclick = () => {
+          stop();
+          step(-1);
+        };
+        $('nextPhoto').onclick = () => {
+          stop();
+          step(1);
+        };
+        $('closeViewer').onclick = () => $('viewer').close();
+        $('viewer').addEventListener('close', () => {
+          stop();
+          $('viewerImage').removeAttribute('src');
+          document.body.classList.remove('no-scroll');
+        });
+        $('viewer').addEventListener('keydown', e => {
+          if (e.key === 'ArrowRight') {
+            e.preventDefault();
+            stop();
+            step(1);
+          }
+          if (e.key === 'ArrowLeft') {
+            e.preventDefault();
+            stop();
+            step(-1);
+          }
+          if (e.code === 'Space' && e.target.tagName !== 'BUTTON') {
+            e.preventDefault();
+            if (viewerList.length > 1) timer ? stop() : play();
+          }
+        });
+        $('slideshow').onclick = () => openViewer(matches()[0]?.id, true);
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) stop();
+        });
+        document.querySelectorAll('dialog').forEach(d => d.addEventListener('click', e => {
+          if (e.target === d) {
+            const r = d.getBoundingClientRect();
+            if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r
+              .bottom) d.close();
+          }
+        }));
+        document.addEventListener('error', e => {
+          if (e.target.tagName === 'IMG') {
+            e.target.alt = '图片未找到：请检查图片与 HTML 的相对位置，保留子文件夹结构';
+          }
+        }, true);
+
+        // 导出可离线打开的 HTML
+        $('export').onclick = () => {
+          save();
+          const clone = document.documentElement.cloneNode(true);
+          clone.querySelector('#album-data').textContent = JSON.stringify(state, null, 2).replace(
+            /</g,
+            '\\u003c');
+          clone.querySelector('#gallery').innerHTML = '';
+          clone.querySelector('#filters').innerHTML = '';
+          clone.querySelectorAll('dialog').forEach(d => d.removeAttribute('open'));
+          clone.querySelector('body').classList.remove('no-scroll');
+          clone.querySelector('#viewerImage').removeAttribute('src');
+          clone.querySelector('#toast').textContent = '';
+          clone.querySelector('#search').setAttribute('value', '');
+          const blob = new Blob(['<!doctype html>\n' + clone.outerHTML], {
+              type: 'text/html;charset=utf-8'
+            }),
+            url = URL.createObjectURL(blob),
+            a = document.createElement('a');
+          a.href = url;
+          a.download = state.title.replace(/[\\/:*?"<>|]/g, '') + '·微影集.html';
+          a.click();
+          setTimeout(() => URL.revokeObjectURL(url), 10000);
+          toast('已导出修改。请将下载的 HTML 放回网站根目录，与图片和子文件夹放在一起。');
+        };
+        $('editToggle').textContent = '整理照片';
+        $('editToggle').setAttribute('aria-pressed', 'false');
+        $('albumSettings').hidden = true;
+        $('batchbar').hidden = true;
+
+        // 右上角菜单与滚动导航
+        function setMenu(open, focus = false) {
+          $('albumMenu').hidden = !open;
+          $('menuToggle').setAttribute('aria-expanded', String(open));
+          $('menuToggle').setAttribute('aria-label', open ? '关闭影集菜单' : '打开影集菜单');
+          if (focus) $('menuToggle').focus();
+        }
+        $('menuToggle').onclick = () => setMenu($('albumMenu').hidden);
+        $('albumMenu').addEventListener('click', e => {
+          if (e.target.closest('button')) setMenu(false);
+        });
+        document.addEventListener('click', e => {
+          if (!e.target.closest('.cover-actions')) setMenu(false);
+        });
+        document.addEventListener('keydown', e => {
+          if (e.key === 'Escape' && !$('albumMenu').hidden) {
+            setMenu(false, true);
+            e.preventDefault();
+          }
+        });
+
+        function updateCoverNav() {
+          document.querySelector('.cover-nav').classList.toggle('scrolled', scrollY > 40);
+        }
+        addEventListener('scroll', updateCoverNav, {
+          passive: true
+        });
+        updateCoverNav();
+        setMenu(false);
+
+        cover();
+        render();
+      })();
+    </script>
+  </body>
+</html>
